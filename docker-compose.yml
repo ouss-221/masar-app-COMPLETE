@@ -1,0 +1,44 @@
+services:
+  mysql:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: masar
+      MYSQL_USER: masar_user
+      MYSQL_PASSWORD: masar_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - masar_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_NAME: masar
+      DB_USER: masar_user
+      DB_PASSWORD: masar_pass
+      JWT_SECRET: dev-only-secret-change-me-please-1234567890
+      CORS_ORIGINS: "http://localhost:5173,capacitor://localhost,http://localhost,https://localhost"
+      # Leave RESEND_API_KEY empty to run without sending real emails (verification/reset
+      # links are just printed to these backend logs instead). Fill it in once you have
+      # a Resend account and a verified sending domain.
+      RESEND_API_KEY: ""
+      RESEND_FROM_EMAIL: "onboarding@resend.dev"
+      FRONTEND_URL: "http://localhost:5173"
+    ports:
+      - "8080:8080"
+
+volumes:
+  masar_mysql_data:

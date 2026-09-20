@@ -1,0 +1,6 @@
+{
+  "appId": "com.masar.app",
+  "appName": "Masar",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
