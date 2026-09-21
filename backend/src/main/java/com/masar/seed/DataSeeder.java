@@ -849,7 +849,7 @@ public class DataSeeder implements CommandLineRunner {
             // ============================================================
             // 11. WORK
             // ============================================================
-            section("work", 11,
+            section("travail", 11,
                 "Travail étudiant",
                 "Student Work",
                 "العمل الطلابي",
@@ -982,6 +982,65 @@ public class DataSeeder implements CommandLineRunner {
                 <div class="faq-item"><div class="q">¿Qué es el NIE?</div><div>Su número de identificación fiscal como extranjero — aparece en el visado y luego en la tarjeta TIE definitiva.</div></div>
                 <div class="faq-item"><div class="q">¿Son accesibles las becas españolas para argelinos?</div><div>Las becas del Ministerio (Becas MEC) están sobre todo reservadas a residentes de la UE — es mejor apuntar a becas de excelencia universitarias o a la AUIP.</div></div>
                 <div class="source-note">Contenido adaptado de la guía "Étudier en Espagne 2026-2027" (edición de agosto de 2026), fuentes: Ministerio de Inclusión, Seguridad Social y Migraciones; Ministerio de Educación; UNEDasiss; Consulados de España en Argel/Orán. Esta guía sigue siendo informativa — verifique siempre los textos reglamentarios oficiales (BOE) y las instrucciones directas del consulado antes de cualquier trámite.</div>
+                """),
+
+            // ============================================================
+            // 14. TRANSPORT
+            // ============================================================
+            section("transport", 14,
+                "Transports",
+                "Transportation",
+                "النقل",
+                "Transporte",
+                """
+                <h3>Carte jeune RENFE</h3>
+                <p>La <strong>Tarjeta Joven RENFE</strong> (moins de 30 ans) donne accès à des réductions
+                récurrentes sur les trains longue distance et Avant/AVE — un bon réflexe dès l'arrivée si vous
+                voyagez souvent entre villes.</p>
+                <h3>Transports urbains</h3>
+                <ul>
+                  <li><strong>Madrid</strong> : abonnement Transporte Público Joven (moins de 26 ans), tarif réduit sur tout le réseau Metro/Cercanías/bus — vérifiez le tarif en vigueur auprès du Consorcio Regional de Transportes</li>
+                  <li><strong>Barcelone</strong> : carte <strong>T-Jove</strong> (moins de 25 ans), trajets illimités sur 90 jours à tarif réduit</li>
+                  <li>Vélos en libre-service : BiciMAD à Madrid, Bicing à Barcelone, souvent avec un tarif annuel réduit pour les résidents</li>
+                </ul>
+                <div class="tip">Renseignez-vous aussi auprès du service des relations internationales de votre université — certaines négocient des tarifs supplémentaires avec les opérateurs locaux.</div>
+                """,
+                """
+                <h3>RENFE youth card</h3>
+                <p>The <strong>Tarjeta Joven RENFE</strong> (under 30) gives recurring discounts on long-distance
+                and Avant/AVE trains — worth getting as soon as you arrive if you travel between cities often.</p>
+                <h3>Urban transport</h3>
+                <ul>
+                  <li><strong>Madrid</strong>: Transporte Público Joven pass (under 26), reduced fare across the whole Metro/Cercanías/bus network — check the current rate with the Consorcio Regional de Transportes</li>
+                  <li><strong>Barcelona</strong>: <strong>T-Jove</strong> card (under 25), unlimited travel for 90 days at a reduced rate</li>
+                  <li>Bike-share: BiciMAD in Madrid, Bicing in Barcelona, often with a reduced annual rate for residents</li>
+                </ul>
+                <div class="tip">Also check with your university's international office — some negotiate extra discounts with local transport operators.</div>
+                """,
+                """
+                <h3>بطاقة الشباب RENFE</h3>
+                <p>تمنحك بطاقة <strong>Tarjeta Joven RENFE</strong> (أقل من 30 سنة) تخفيضات متكررة على قطارات
+                المسافات الطويلة وAvant/AVE — من المفيد الحصول عليها فور وصولك إذا كنت تسافر كثيرًا بين المدن.</p>
+                <h3>النقل الحضري</h3>
+                <ul>
+                  <li><strong>مدريد</strong>: اشتراك Transporte Público Joven (أقل من 26 سنة)، تعريفة مخفضة على كامل شبكة المترو/Cercanías/الحافلات — تحقق من التعريفة الحالية لدى Consorcio Regional de Transportes</li>
+                  <li><strong>برشلونة</strong>: بطاقة <strong>T-Jove</strong> (أقل من 25 سنة)، تنقلات غير محدودة لمدة 90 يومًا بتعريفة مخفضة</li>
+                  <li>الدراجات المشتركة: BiciMAD في مدريد، Bicing في برشلونة، غالبًا بتعريفة سنوية مخفضة للمقيمين</li>
+                </ul>
+                <div class="tip">تحقق أيضًا لدى مكتب العلاقات الدولية بجامعتك — بعضها يتفاوض على تخفيضات إضافية مع مشغلي النقل المحليين.</div>
+                """,
+                """
+                <h3>Tarjeta joven RENFE</h3>
+                <p>La <strong>Tarjeta Joven RENFE</strong> (menores de 30 años) da acceso a descuentos recurrentes
+                en trenes de larga distancia y Avant/AVE — conviene tramitarla nada más llegar si viaja a menudo
+                entre ciudades.</p>
+                <h3>Transporte urbano</h3>
+                <ul>
+                  <li><strong>Madrid</strong>: abono Transporte Público Joven (menores de 26 años), tarifa reducida en toda la red de Metro/Cercanías/bus — consulte la tarifa vigente en el Consorcio Regional de Transportes</li>
+                  <li><strong>Barcelona</strong>: tarjeta <strong>T-Jove</strong> (menores de 25 años), viajes ilimitados durante 90 días a tarifa reducida</li>
+                  <li>Bicicletas compartidas: BiciMAD en Madrid, Bicing en Barcelona, a menudo con tarifa anual reducida para residentes</li>
+                </ul>
+                <div class="tip">Consulte también con la oficina de relaciones internacionales de su universidad — algunas negocian descuentos adicionales con los operadores de transporte locales.</div>
                 """)
         );
 
@@ -1295,7 +1354,7 @@ public class DataSeeder implements CommandLineRunner {
                 <div class="warn"><strong>تذكير:</strong> بدون منحة، لم تعد إعانات APL/ALS/ALF متاحة منذ يوليو 2026 — يجب تغطية ميزانية السكن بالكامل من مواردك الخاصة.</div>
                 """),
 
-            section3("logement", "fr", 4,
+            section3("housing", "fr", 4,
                 "Logement en France",
                 "Housing in France",
                 "السكن في فرنسا",
@@ -1354,7 +1413,7 @@ public class DataSeeder implements CommandLineRunner {
                 </ul>
                 """),
 
-            section3("arrivee", "fr", 5,
+            section3("arrival", "fr", 5,
                 "Arrivée : validation du titre de séjour & banque",
                 "Arrival: residence permit validation & banking",
                 "الوصول: التحقق من تصريح الإقامة والبنك",
@@ -1418,6 +1477,189 @@ public class DataSeeder implements CommandLineRunner {
                 العمل بدوام كامل، أي ~20 ساعة أسبوعيًا في المتوسط)، بدون الحاجة إلى تصريح عمل منفصل. الفترة
                 المرجعية هي 12 شهرًا متجددة من تاريخ صلاحية التصريح، وليست السنة الميلادية.</p>
                 <div class="warn">تتغير قواعد العمل بانتظام — تأكد دائمًا من التفاصيل الحالية لدى المكتب الدولي بجامعتك قبل الالتزام بجدول عمل.</div>
+                """),
+
+            section3("money", "fr", 7,
+                "Banque",
+                "Banking",
+                "البنك",
+                """
+                <h3>Ouvrir un compte bancaire</h3>
+                <p>Ouvrir un compte est un <strong>droit</strong> pour tout étudiant étranger en France. Trois
+                documents suffisent en général : pièce d'identité, justificatif de domicile (ou l'adresse du
+                service des relations internationales de votre établissement si vous n'avez pas encore de
+                logement), et attestation de scolarité ou carte d'étudiant. Un rendez-vous en agence est
+                généralement nécessaire pour les banques traditionnelles.</p>
+                <ul>
+                  <li><strong>Banques traditionnelles</strong> (BNP Paribas, Société Générale, Crédit Agricole, LCL) — proposent souvent des offres "jeune/étudiant" avec carte gratuite ou à tarif réduit</li>
+                  <li><strong>Banques en ligne</strong> (Boursorama, N26, Revolut) — ouverture 100% à distance, souvent plus rapide pour un nouvel arrivant, mais un compte à l'étranger n'est pas toujours accepté partout (bourses, employeur)</li>
+                </ul>
+                <div class="tip"><strong>Comparez avant de choisir :</strong> les frais de carte, les virements internationaux et les retraits à l'étranger varient sensiblement d'une banque à l'autre — vérifiez surtout le coût d'un virement vers votre pays d'origine.</div>
+                <h3>Si une banque refuse de vous ouvrir un compte</h3>
+                <p>La procédure du <strong>droit au compte</strong> permet à la Banque de France de désigner
+                d'office un établissement tenu de vous ouvrir un compte — gratuitement, sur simple dossier.</p>
+                <p style="font-size:13.5px;opacity:0.7;">Gardez votre RIB à portée de main dès l'ouverture : il vous sera redemandé pour la CAF, l'université, un employeur ou vos remboursements de santé.</p>
+                """,
+                """
+                <h3>Opening a bank account</h3>
+                <p>Opening an account is a <strong>legal right</strong> for any international student in France.
+                Three documents are usually enough: ID, proof of address (or your institution's international
+                office address if you don't have housing yet), and an enrollment certificate or student card.
+                Traditional banks generally require a branch appointment.</p>
+                <ul>
+                  <li><strong>Traditional banks</strong> (BNP Paribas, Société Générale, Crédit Agricole, LCL) — often have "young/student" offers with a free or discounted card</li>
+                  <li><strong>Online banks</strong> (Boursorama, N26, Revolut) — 100% remote opening, often faster for a newcomer, though a foreign account isn't always accepted everywhere (scholarships, employers)</li>
+                </ul>
+                <div class="tip"><strong>Compare before choosing:</strong> card fees, international transfers and withdrawals abroad vary noticeably between banks — check especially the cost of a transfer back to your home country.</div>
+                <h3>If a bank refuses to open an account for you</h3>
+                <p>The <strong>droit au compte</strong> (right to an account) procedure lets the Banque de France
+                appoint a bank that is required to open one for you — free of charge, on a simple application.</p>
+                <p style="font-size:13.5px;opacity:0.7;">Keep your RIB (bank details slip) handy as soon as you open the account — you'll need it again for CAF, your university, an employer, or health reimbursements.</p>
+                """,
+                """
+                <h3>فتح حساب بنكي</h3>
+                <p>فتح حساب بنكي هو <strong>حق</strong> لكل طالب أجنبي في فرنسا. تكفي عمومًا ثلاث وثائق:
+                بطاقة هوية، إثبات سكن (أو عنوان مصلحة العلاقات الدولية بمؤسستك إذا لم يكن لديك سكن بعد)،
+                وشهادة تسجيل أو بطاقة طالب. عادةً ما يتطلب الأمر موعدًا في الوكالة بالنسبة للبنوك التقليدية.</p>
+                <ul>
+                  <li><strong>البنوك التقليدية</strong> (BNP Paribas، Société Générale، Crédit Agricole، LCL) — غالبًا ما تقدم عروض "شباب/طالب" ببطاقة مجانية أو بسعر مخفض</li>
+                  <li><strong>البنوك الرقمية</strong> (Boursorama، N26، Revolut) — فتح الحساب عن بعد بالكامل، غالبًا أسرع للقادم الجديد، لكن الحساب الأجنبي لا يُقبل دائمًا في كل مكان (المنح، صاحب العمل)</li>
+                </ul>
+                <div class="tip"><strong>قارن قبل الاختيار:</strong> تختلف رسوم البطاقة والتحويلات الدولية والسحب من الخارج بشكل ملحوظ من بنك لآخر — تحقق خاصة من تكلفة التحويل نحو بلدك الأصلي.</div>
+                <h3>إذا رفض بنك فتح حساب لك</h3>
+                <p>إجراء <strong>droit au compte</strong> (الحق في حساب بنكي) يسمح لبنك فرنسا بتعيين مؤسسة
+                ملزمة بفتح حساب لك — مجانًا، بناءً على ملف بسيط.</p>
+                <p style="font-size:13.5px;opacity:0.7;">احتفظ بـ RIB (كشف بيانات الحساب) في متناول يدك فور فتح الحساب — سيُطلب منك مجددًا لصندوق CAF، أو الجامعة، أو صاحب العمل، أو تعويضات الصحة.</p>
+                """),
+
+            section3("life", "fr", 8,
+                "Santé, logement aidé & communauté",
+                "Health, housing aid & community",
+                "الصحة، مساعدة السكن والمجتمع",
+                """
+                <h3>Sécurité sociale étudiante</h3>
+                <p>L'affiliation <strong>n'est pas automatique</strong> : inscrivez-vous vous-même sur
+                <strong>etudiant-etranger.ameli.fr</strong>. Documents demandés : pièce d'identité, titre de
+                séjour/visa, attestation de scolarité, acte de naissance, et un RIB. Un numéro provisoire est
+                attribué immédiatement, ce qui vous donne déjà accès au remboursement des soins ; la Carte Vitale
+                définitive arrive après validation complète du dossier.</p>
+                <div class="tip">Une <strong>mutuelle étudiante</strong> complémentaire est fortement conseillée : la Sécurité sociale ne rembourse qu'une partie des frais médicaux, le reste reste à votre charge sans complémentaire.</div>
+
+                <h3>Aide au logement (APL/CAF)</h3>
+                <div class="warn"><strong>Changement important à partir du 1er juillet 2026 :</strong> les étudiants non européens (hors UE/EEE/Suisse) ne peuvent plus percevoir l'APL que s'ils touchent une <strong>bourse sur critères sociaux</strong> — sauf s'ils travaillent, sont en contrat d'apprentissage/professionnalisation, ou sont réfugiés/apatrides. Si vous n'êtes pas boursier et ne travaillez pas, ne comptez pas sur l'APL dans votre budget.</div>
+
+                <h3>Trouver sa communauté</h3>
+                <p>Les communautés algérienne, marocaine et tunisienne sont bien établies à Paris, Lyon, Marseille,
+                Lille et Toulouse — les associations étudiantes nord-africaines de chaque campus sont souvent le
+                moyen le plus rapide de s'intégrer et de trouver de bons plans logement/colocation.</p>
+
+                <h3>Numéros d'urgence</h3>
+                <ul>
+                  <li><strong>15</strong> — SAMU (urgences médicales)</li>
+                  <li><strong>17</strong> — Police / gendarmerie</li>
+                  <li><strong>18</strong> — Pompiers</li>
+                  <li><strong>112</strong> — numéro d'urgence européen unique, utilisable même sans crédit ou carte SIM</li>
+                </ul>
+                """,
+                """
+                <h3>Student social security</h3>
+                <p>Registration is <strong>not automatic</strong>: sign up yourself at
+                <strong>etudiant-etranger.ameli.fr</strong>. Documents requested: ID, residence permit/visa,
+                enrollment certificate, birth certificate, and bank details (IBAN/RIB). A provisional number is
+                assigned immediately, already giving you access to healthcare reimbursement; the final Carte
+                Vitale arrives once your file is fully validated.</p>
+                <div class="tip">A complementary <strong>student mutuelle</strong> is strongly recommended: Sécurité sociale only reimburses part of medical costs, the rest is on you without one.</div>
+
+                <h3>Housing aid (APL/CAF)</h3>
+                <div class="warn"><strong>Important change from July 1, 2026:</strong> non-EU/EEA/Swiss students can only receive APL if they hold a <strong>means-tested scholarship (bourse sur critères sociaux)</strong> — unless they're employed, on an apprenticeship/professionalization contract, or are refugees/stateless. If you're not a scholarship holder and don't work, don't count on APL in your budget.</div>
+
+                <h3>Finding your community</h3>
+                <p>Algerian, Moroccan and Tunisian communities are well established in Paris, Lyon, Marseille, Lille
+                and Toulouse — North African student associations on each campus are often the fastest way to
+                settle in and find good housing/flatshare leads.</p>
+
+                <h3>Emergency numbers</h3>
+                <ul>
+                  <li><strong>15</strong> — SAMU (medical emergencies)</li>
+                  <li><strong>17</strong> — Police</li>
+                  <li><strong>18</strong> — Fire brigade</li>
+                  <li><strong>112</strong> — single European emergency number, works even without credit or a SIM card</li>
+                </ul>
+                """,
+                """
+                <h3>الضمان الاجتماعي الطلابي</h3>
+                <p>التسجيل <strong>ليس تلقائيًا</strong>: سجّل نفسك على موقع <strong>etudiant-etranger.ameli.fr</strong>.
+                الوثائق المطلوبة: بطاقة هوية، تصريح إقامة/تأشيرة، شهادة تسجيل، شهادة ميلاد، وبيانات بنكية (IBAN/RIB).
+                يُمنح رقم مؤقت فورًا، مما يتيح لك الاستفادة من تعويض الرعاية الصحية؛ وتصل بطاقة Carte Vitale
+                النهائية بعد التحقق الكامل من الملف.</p>
+                <div class="tip">يُنصح بشدة بالحصول على <strong>تأمين تكميلي (mutuelle)</strong>: الضمان الاجتماعي لا يعوض سوى جزء من التكاليف الطبية، والباقي على عاتقك بدون تأمين تكميلي.</div>
+
+                <h3>مساعدة السكن (APL/CAF)</h3>
+                <div class="warn"><strong>تغيير مهم ابتداءً من 1 يوليو 2026:</strong> لن يتمكن الطلبة من خارج الاتحاد الأوروبي/المنطقة الاقتصادية الأوروبية/سويسرا من الحصول على APL إلا إذا كانوا يستفيدون من <strong>منحة على أساس معايير اجتماعية</strong> — إلا إذا كانوا يعملون، أو في عقد تدريب/تأهيل مهني، أو لاجئين/عديمي الجنسية. إذا لم تكن منحيًا ولا تعمل، لا تعتمد على APL في ميزانيتك.</div>
+
+                <h3>إيجاد مجتمعك</h3>
+                <p>الجاليات الجزائرية والمغربية والتونسية راسخة جيدًا في باريس وليون ومرسيليا وليل وتولوز —
+                جمعيات الطلبة الشمال أفريقيين في كل حرم جامعي غالبًا ما تكون أسرع وسيلة للاندماج وإيجاد
+                فرص سكن/سكن مشترك جيدة.</p>
+
+                <h3>أرقام الطوارئ</h3>
+                <ul>
+                  <li><strong>15</strong> — SAMU (الطوارئ الطبية)</li>
+                  <li><strong>17</strong> — الشرطة / الدرك</li>
+                  <li><strong>18</strong> — الحماية المدنية (الإطفاء)</li>
+                  <li><strong>112</strong> — الرقم الأوروبي الموحد للطوارئ، يعمل حتى بدون رصيد أو شريحة اتصال</li>
+                </ul>
+                """),
+
+            // ============================================================
+            // 9. TRANSPORT
+            // ============================================================
+            section3("transport", "fr", 9,
+                "Transports",
+                "Transportation",
+                "النقل",
+                """
+                <h3>SNCF - trains grande ligne</h3>
+                <p>La carte <strong>Avantage Jeune</strong> (12-27 ans, environ 49€/an) donne des réductions
+                récurrentes (jusqu'à 30%) sur les billets SNCF grande ligne et TGV — rentabilisée dès 2 à 3
+                trajets.</p>
+                <h3>Réseaux urbains</h3>
+                <ul>
+                  <li><strong>Île-de-France (Paris)</strong> : forfait <strong>Navigo Imagine R</strong>, abonnement annuel étudiant à tarif réduit sur tout le réseau métro/RER/bus/tram</li>
+                  <li><strong>Lyon</strong> : abonnement étudiant TCL</li>
+                  <li><strong>Marseille</strong> : abonnement étudiant RTM</li>
+                  <li><strong>Lille</strong> : abonnement étudiant Ilévia</li>
+                  <li><strong>Toulouse</strong> : abonnement étudiant Tisséo</li>
+                </ul>
+                <div class="tip">Le covoiturage (BlaBlaCar) est une option courante et économique pour les trajets entre villes moyennes mal desservies par le train.</div>
+                """,
+                """
+                <h3>SNCF - intercity trains</h3>
+                <p>The <strong>Avantage Jeune</strong> card (ages 12-27, about €49/year) gives recurring discounts
+                (up to 30%) on SNCF intercity and TGV tickets — pays for itself after 2-3 trips.</p>
+                <h3>Urban networks</h3>
+                <ul>
+                  <li><strong>Île-de-France (Paris)</strong>: <strong>Navigo Imagine R</strong> pass, discounted annual student pass across the whole metro/RER/bus/tram network</li>
+                  <li><strong>Lyon</strong>: TCL student pass</li>
+                  <li><strong>Marseille</strong>: RTM student pass</li>
+                  <li><strong>Lille</strong>: Ilévia student pass</li>
+                  <li><strong>Toulouse</strong>: Tisséo student pass</li>
+                </ul>
+                <div class="tip">Carpooling (BlaBlaCar) is a common, cheap option between mid-sized towns the train doesn't serve well.</div>
+                """,
+                """
+                <h3>SNCF - قطارات بين المدن</h3>
+                <p>تمنحك بطاقة <strong>Avantage Jeune</strong> (12-27 سنة، حوالي 49 يورو سنويًا) تخفيضات متكررة
+                (حتى 30%) على تذاكر SNCF بين المدن وTGV — تُسترد تكلفتها بعد رحلتين أو ثلاث فقط.</p>
+                <h3>شبكات النقل الحضري</h3>
+                <ul>
+                  <li><strong>منطقة إيل دو فرانس (باريس)</strong>: اشتراك <strong>Navigo Imagine R</strong>، اشتراك سنوي طلابي بتعريفة مخفضة على كامل شبكة المترو/RER/الحافلات/الترام</li>
+                  <li><strong>ليون</strong>: اشتراك طلابي TCL</li>
+                  <li><strong>مرسيليا</strong>: اشتراك طلابي RTM</li>
+                  <li><strong>ليل</strong>: اشتراك طلابي Ilévia</li>
+                  <li><strong>تولوز</strong>: اشتراك طلابي Tisséo</li>
+                </ul>
+                <div class="tip">التشارك في السيارة (BlaBlaCar) خيار شائع واقتصادي للتنقل بين المدن المتوسطة التي لا يخدمها القطار جيدًا.</div>
                 """)
         );
 
@@ -1704,7 +1946,7 @@ public class DataSeeder implements CommandLineRunner {
                 <p style="font-size:13.5px;opacity:0.7;">مدن إيطالية أخرى (تورينو، بولونيا، روما خارج المركز، مدن الجنوب) أرخص بشكل ملحوظ من ميلانو — خيار جيد إذا كانت الميزانية محدودة.</p>
                 """),
 
-            section3("logement", "it", 4,
+            section3("housing", "it", 4,
                 "Logement en Italie",
                 "Housing in Italy",
                 "السكن في إيطاليا",
@@ -1736,7 +1978,7 @@ public class DataSeeder implements CommandLineRunner {
                 <div class="warn">لن تتمكن من توقيع عقد إيجار بدون Codice Fiscale الخاص بك (راجع قسم الوصول) — هذا عائق حقيقي إذا لم تخطط له مسبقًا.</div>
                 """),
 
-            section3("arrivee", "it", 5,
+            section3("arrival", "it", 5,
                 "Arrivée : Codice Fiscale, banque & permesso di soggiorno",
                 "Arrival: Codice Fiscale, banking & permesso di soggiorno",
                 "الوصول: الرمز الضريبي والبنك وتصريح الإقامة",
@@ -1828,6 +2070,170 @@ public class DataSeeder implements CommandLineRunner {
                 <strong>1040 ساعة سنويًا</strong> (DPR 394/1999، المادة 14). لا يمكن تجميع هذا الحد السنوي
                 في أشهر الصيف فقط.</p>
                 <div class="warn">تتغير قواعد العمل بانتظام — تأكد دائمًا من التفاصيل الحالية لدى المكتب الدولي بجامعتك قبل الالتزام بجدول عمل.</div>
+                """),
+
+            section3("money", "it", 7,
+                "Banca",
+                "Banking",
+                "البنك",
+                """
+                <h3>Aprire un conto corrente</h3>
+                <p>Le banques exigent presque toutes le <strong>Codice Fiscale</strong> — obtenez-le en priorité
+                (gratuit, le jour même, à l'Agenzia delle Entrate avec votre passeport). Ensuite, deux options :</p>
+                <ul>
+                  <li><strong>Poste Italiane (BancoPosta)</strong> — souvent la solution la plus simple et la moins chère pour un étudiant étranger, largement disponible même dans les petites villes</li>
+                  <li><strong>Banques traditionnelles</strong> (Intesa Sanpaolo, UniCredit) — demandent généralement un justificatif de domicile complet et parfois le permesso di soggiorno (ou au moins le récépissé de la demande)</li>
+                  <li><strong>Banques en ligne</strong> (N26, Revolut) — ouverture rapide à distance avec le Codice Fiscale, sans rendez-vous ni adresse italienne complète dans beaucoup de cas</li>
+                </ul>
+                <div class="warn">Sans Codice Fiscale actif, vous ne pourrez ouvrir aucun compte, ni signer de bail, ni vous inscrire au service de santé — obtenez-le avant tout le reste, idéalement avant même votre départ auprès du consulat italien.</div>
+                <div class="tip">Comparez le <strong>canone mensile</strong> (frais de tenue de compte), les commissions de virement et le coût de la carte avant de choisir — ils varient sensiblement d'une banque à l'autre.</div>
+                """,
+                """
+                <h3>Opening a bank account</h3>
+                <p>Almost every bank requires your <strong>Codice Fiscale</strong> first — get it as a priority
+                (free, same-day, at the Agenzia delle Entrate with your passport). Then you have three options:</p>
+                <ul>
+                  <li><strong>Poste Italiane (BancoPosta)</strong> — often the simplest and cheapest option for an international student, widely available even in smaller towns</li>
+                  <li><strong>Traditional banks</strong> (Intesa Sanpaolo, UniCredit) — usually ask for full proof of address and sometimes the permesso di soggiorno (or at least the application receipt)</li>
+                  <li><strong>Online banks</strong> (N26, Revolut) — fast remote opening with just the Codice Fiscale, often without an appointment or a full Italian address</li>
+                </ul>
+                <div class="warn">Without an active Codice Fiscale you can't open any account, sign a lease, or register with the health service — get it before everything else, ideally at the Italian consulate before you even leave.</div>
+                <div class="tip">Compare the <strong>canone mensile</strong> (account-keeping fee), transfer charges and card cost before choosing — they vary noticeably between banks.</div>
+                """,
+                """
+                <h3>فتح حساب بنكي</h3>
+                <p>تشترط جل البنوك <strong>الرمز الضريبي (Codice Fiscale)</strong> أولاً — احصل عليه بالأولوية
+                (مجانًا، في نفس اليوم، لدى Agenzia delle Entrate بجواز سفرك). بعدها لديك ثلاثة خيارات:</p>
+                <ul>
+                  <li><strong>البريد الإيطالي (Poste Italiane / BancoPosta)</strong> — غالبًا الحل الأبسط والأرخص للطالب الأجنبي، متوفر على نطاق واسع حتى في المدن الصغيرة</li>
+                  <li><strong>البنوك التقليدية</strong> (Intesa Sanpaolo، UniCredit) — تطلب عادةً إثبات سكن كامل وأحيانًا تصريح الإقامة (أو على الأقل وصل الطلب)</li>
+                  <li><strong>البنوك الرقمية</strong> (N26، Revolut) — فتح سريع عن بعد بالرمز الضريبي فقط، غالبًا بدون موعد أو عنوان إيطالي كامل</li>
+                </ul>
+                <div class="warn">بدون رمز ضريبي نشط لن تتمكن من فتح أي حساب، أو توقيع عقد إيجار، أو التسجيل في الخدمة الصحية — احصل عليه قبل كل شيء آخر، ويفضل لدى القنصلية الإيطالية قبل حتى مغادرتك.</div>
+                <div class="tip">قارن <strong>canone mensile</strong> (رسوم تسيير الحساب)، وعمولات التحويل، وتكلفة البطاقة قبل الاختيار — تختلف بشكل ملحوظ من بنك لآخر.</div>
+                """),
+
+            section3("life", "it", 8,
+                "Santé & communauté",
+                "Health & community",
+                "الصحة والمجتمع",
+                """
+                <h3>S'inscrire au Service Sanitaire National (SSN)</h3>
+                <ol>
+                  <li>Obtenir le <strong>Codice Fiscale</strong> (Agenzia delle Entrate, le jour même)</li>
+                  <li>Déposer la demande de <strong>permesso di soggiorno</strong> — le récépissé suffit déjà pour la suite, pas besoin d'attendre la carte physique</li>
+                  <li>Payer la cotisation annuelle (environ <strong>700€</strong> pour un étudiant, montant forfaitaire non proratisé) via le formulaire Modello F24 Semplificato, en banque ou à la poste</li>
+                  <li>Se présenter au guichet "Scelta e Revoca" de l'<strong>ASL</strong> de votre lieu de résidence avec passeport, Codice Fiscale, récépissé du permesso, preuve de paiement, certificat d'inscription universitaire et justificatif de domicile — vous choisissez alors votre médecin de famille (medico di base)</li>
+                  <li>Réception de la <strong>tessera sanitaria</strong> sous 1 à 3 semaines</li>
+                </ol>
+                <div class="tip">Le montant exact et les modalités peuvent varier légèrement selon la région et l'année — vérifiez le tarif en vigueur auprès de votre ASL avant de payer.</div>
+
+                <h3>Trouver sa communauté</h3>
+                <p>Les communautés algérienne, marocaine et tunisienne sont bien établies à Turin, Milan, Bologne
+                et Rome — les associations étudiantes nord-africaines sont souvent le moyen le plus rapide de
+                s'intégrer et de trouver de bons plans logement.</p>
+
+                <h3>Numéros d'urgence</h3>
+                <ul>
+                  <li><strong>112</strong> — numéro unique européen (NUE), à privilégier, disponible sur tout le territoire</li>
+                  <li><strong>113</strong> — Police d'État (Polizia di Stato)</li>
+                  <li><strong>115</strong> — Pompiers (Vigili del Fuoco)</li>
+                  <li><strong>118</strong> — Urgences médicales</li>
+                </ul>
+                """,
+                """
+                <h3>Registering with the National Health Service (SSN)</h3>
+                <ol>
+                  <li>Get your <strong>Codice Fiscale</strong> (Agenzia delle Entrate, same day)</li>
+                  <li>Submit your <strong>permesso di soggiorno</strong> application — the receipt is already enough to move forward, no need to wait for the physical card</li>
+                  <li>Pay the annual fee (around <strong>€700</strong> for a student, a flat amount not prorated by arrival date) using the Modello F24 Semplificato form, at a bank or post office</li>
+                  <li>Go to the "Scelta e Revoca" desk at the <strong>ASL</strong> for your area of residence with your passport, Codice Fiscale, permesso receipt, proof of payment, university enrollment certificate and proof of address — you'll pick your GP (medico di base) there</li>
+                  <li>Receive your <strong>tessera sanitaria</strong> (health card) within 1-3 weeks</li>
+                </ol>
+                <div class="tip">The exact amount and process can vary slightly by region and year — confirm the current fee with your ASL before paying.</div>
+
+                <h3>Finding your community</h3>
+                <p>Algerian, Moroccan and Tunisian communities are well established in Turin, Milan, Bologna and
+                Rome — North African student associations are often the fastest way to settle in and find good
+                housing leads.</p>
+
+                <h3>Emergency numbers</h3>
+                <ul>
+                  <li><strong>112</strong> — single European emergency number (NUE), the one to use, available nationwide</li>
+                  <li><strong>113</strong> — State Police (Polizia di Stato)</li>
+                  <li><strong>115</strong> — Fire brigade (Vigili del Fuoco)</li>
+                  <li><strong>118</strong> — Medical emergencies</li>
+                </ul>
+                """,
+                """
+                <h3>التسجيل في الخدمة الصحية الوطنية (SSN)</h3>
+                <ol>
+                  <li>الحصول على <strong>الرمز الضريبي</strong> (Agenzia delle Entrate، في نفس اليوم)</li>
+                  <li>تقديم طلب <strong>تصريح الإقامة (permesso di soggiorno)</strong> — يكفي وصل الطلب للمتابعة، لا حاجة لانتظار البطاقة الفعلية</li>
+                  <li>دفع الاشتراك السنوي (حوالي <strong>700 يورو</strong> للطالب، مبلغ ثابت غير مجزأ حسب تاريخ الوصول) عبر استمارة Modello F24 Semplificato، في البنك أو مكتب البريد</li>
+                  <li>التوجه إلى شباك "Scelta e Revoca" في <strong>ASL</strong> التابع لمكان إقامتك مع جواز السفر، الرمز الضريبي، وصل طلب تصريح الإقامة، إثبات الدفع، شهادة التسجيل الجامعي وإثبات السكن — وهناك تختار طبيبك العام (medico di base)</li>
+                  <li>استلام <strong>tessera sanitaria</strong> (البطاقة الصحية) خلال 1 إلى 3 أسابيع</li>
+                </ol>
+                <div class="tip">قد يختلف المبلغ الدقيق والإجراءات قليلاً حسب المنطقة والسنة — تحقق من التعريفة الحالية لدى ASL قبل الدفع.</div>
+
+                <h3>إيجاد مجتمعك</h3>
+                <p>الجاليات الجزائرية والمغربية والتونسية راسخة جيدًا في تورين وميلانو وبولونيا وروما —
+                جمعيات الطلبة الشمال أفريقيين غالبًا ما تكون أسرع وسيلة للاندماج وإيجاد فرص سكن جيدة.</p>
+
+                <h3>أرقام الطوارئ</h3>
+                <ul>
+                  <li><strong>112</strong> — الرقم الأوروبي الموحد للطوارئ (NUE)، يُفضل استخدامه، متوفر في كامل التراب الوطني</li>
+                  <li><strong>113</strong> — الشرطة (Polizia di Stato)</li>
+                  <li><strong>115</strong> — الحماية المدنية (Vigili del Fuoco)</li>
+                  <li><strong>118</strong> — الطوارئ الطبية</li>
+                </ul>
+                """),
+
+            // ============================================================
+            // 9. TRANSPORT
+            // ============================================================
+            section3("transport", "it", 9,
+                "Transports",
+                "Transportation",
+                "النقل",
+                """
+                <h3>Trenitalia - trains grande ligne</h3>
+                <p>La carte <strong>CartaFreccia Young</strong> (moins de 30 ans, gratuite) donne des réductions
+                récurrentes (jusqu'à 30-40% selon les offres) sur les trains Frecce grande ligne.</p>
+                <h3>Réseaux urbains</h3>
+                <ul>
+                  <li><strong>Milan</strong> : abonnement étudiant ATM</li>
+                  <li><strong>Rome</strong> : abonnement Metrebus à tarif étudiant</li>
+                  <li><strong>Turin</strong> : abonnement étudiant GTT</li>
+                  <li><strong>Bologne</strong> : abonnement étudiant TPER</li>
+                </ul>
+                <div class="tip">Certaines régions (ex. la Lombardie avec la carte IoStudio) proposent des réductions supplémentaires sur les trains régionaux pour les étudiants — renseignez-vous auprès de la région où se trouve votre université.</div>
+                """,
+                """
+                <h3>Trenitalia - intercity trains</h3>
+                <p>The <strong>CartaFreccia Young</strong> card (under 30, free) gives recurring discounts (up to
+                30-40% depending on the offer) on Frecce intercity trains.</p>
+                <h3>Urban networks</h3>
+                <ul>
+                  <li><strong>Milan</strong>: ATM student pass</li>
+                  <li><strong>Rome</strong>: Metrebus student fare</li>
+                  <li><strong>Turin</strong>: GTT student pass</li>
+                  <li><strong>Bologna</strong>: TPER student pass</li>
+                </ul>
+                <div class="tip">Some regions (e.g. Lombardy with the IoStudio card) offer extra discounts on regional trains for students — check with the region where your university is.</div>
+                """,
+                """
+                <h3>Trenitalia - قطارات بين المدن</h3>
+                <p>تمنحك بطاقة <strong>CartaFreccia Young</strong> (أقل من 30 سنة، مجانية) تخفيضات متكررة (حتى
+                30-40% حسب العروض) على قطارات Frecce بين المدن.</p>
+                <h3>شبكات النقل الحضري</h3>
+                <ul>
+                  <li><strong>ميلانو</strong>: اشتراك طلابي ATM</li>
+                  <li><strong>روما</strong>: تعريفة طلابية Metrebus</li>
+                  <li><strong>تورين</strong>: اشتراك طلابي GTT</li>
+                  <li><strong>بولونيا</strong>: اشتراك طلابي TPER</li>
+                </ul>
+                <div class="tip">بعض المناطق (مثل لومبارديا ببطاقة IoStudio) تقدم تخفيضات إضافية على القطارات الجهوية للطلبة — تحقق من ذلك لدى منطقة جامعتك.</div>
                 """)
         );
 
@@ -1882,8 +2288,14 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void seedChecklist() {
+        seedChecklistSpain();
+        seedChecklistFrance();
+        seedChecklistItaly();
+    }
+
+    private void seedChecklistSpain() {
         int order = 0;
-        order = saveGroup(
+        order = saveGroup("es",
             "Dossier académique & admission", "Academic file & admission", "الملف الأكاديمي والقبول", "Expediente académico y admisión",
             new String[][]{
                 {"Passeport valide (plus de 12 mois)", "Valid passport (over 12 months)", "جواز سفر ساري المفعول (أكثر من 12 شهرًا)", "Pasaporte válido (más de 12 meses)"},
@@ -1893,7 +2305,7 @@ public class DataSeeder implements CommandLineRunner {
                 {"Dossier UNEDasiss créé et validé", "UNEDasiss file created and validated", "ملف UNEDasiss منشأ ومصادق عليه", "Expediente UNEDasiss creado y validado"},
                 {"Lettre d'admission officielle de l'université", "Official university admission letter", "رسالة القبول الرسمية من الجامعة", "Carta de admisión oficial de la universidad"},
             }, order);
-        order = saveGroup(
+        order = saveGroup("es",
             "Dossier visa & logement", "Visa & housing file", "ملف التأشيرة والسكن", "Expediente de visado y vivienda",
             new String[][]{
                 {"Formulaire de demande de visa rempli", "Visa application form completed", "استمارة طلب التأشيرة معبأة", "Formulario de solicitud de visado cumplimentado"},
@@ -1904,7 +2316,7 @@ public class DataSeeder implements CommandLineRunner {
                 {"Logement réservé ou attestation d'hébergement obtenue", "Housing booked or accommodation certificate obtained", "السكن محجوز أو شهادة الإيواء متحصل عليها", "Vivienda reservada o certificado de alojamiento obtenido"},
                 {"Rendez-vous BLS International pris (Alger ou Oran)", "BLS International appointment booked (Algiers or Oran)", "موعد BLS International محجوز (الجزائر أو وهران)", "Cita en BLS International reservada (Argel u Orán)"},
             }, order);
-        saveGroup(
+        saveGroup("es",
             "Premières semaines en Espagne", "First weeks in Spain", "الأسابيع الأولى في إسبانيا", "Primeras semanas en España",
             new String[][]{
                 {"Empadronamiento fait à la mairie", "Empadronamiento done at the town hall", "إتمام Empadronamiento في البلدية", "Empadronamiento hecho en el ayuntamiento"},
@@ -1916,10 +2328,78 @@ public class DataSeeder implements CommandLineRunner {
             }, order);
     }
 
-    private int saveGroup(String groupFr, String groupEn, String groupAr, String groupEs, String[][] rows, int startOrder) {
+    // France and Italy checklists are FR/EN/AR only (no Spanish translation yet,
+    // same reasoning as section3() - see its comment above), so the Es slot is
+    // left null and pickItemText/pickGroupName fall back to French for it.
+    private void seedChecklistFrance() {
+        int order = 0;
+        order = saveGroup("fr",
+            "Dossier académique & Campus France", "Academic file & Campus France", "الملف الأكاديمي وCampus France", null,
+            new String[][]{
+                {"Passeport valide (plus de 12 mois)", "Valid passport (over 12 months)", "جواز سفر ساري المفعول (أكثر من 12 شهرًا)", null},
+                {"TCF (SO ou DAP selon le niveau) passé", "TCF (SO or DAP depending on level) taken", "اجتياز اختبار TCF (SO أو DAP حسب المستوى)", null},
+                {"Diplômes / relevés de notes traduits", "Diplomas / transcripts translated", "الشهادات / كشوف النقاط مترجمة", null},
+                {"Dossier \"Études en France\" complété (boîte pastel)", "\"Études en France\" file completed", "ملف \"Études en France\" مكتمل", null},
+                {"Lettre de motivation rédigée pour chaque vœu", "Motivation letter written for each choice", "رسالة الدافع محررة لكل اختيار", null},
+                {"Réponse(s) d'admission reçue(s)", "Admission response(s) received", "استلام رد (ردود) القبول", null},
+            }, order);
+        order = saveGroup("fr",
+            "Dossier visa & logement", "Visa & housing file", "ملف التأشيرة والسكن", null,
+            new String[][]{
+                {"Rendez-vous TLScontact pris", "TLScontact appointment booked", "حجز موعد TLScontact", null},
+                {"Preuve financière réunie (877,50€/mois min.)", "Financial proof gathered (€877.50/month min.)", "الإثبات المالي جاهز (877.50 يورو/شهر كحد أدنى)", null},
+                {"Assurance santé/voyage souscrite pour la durée du visa", "Health/travel insurance taken out for the visa period", "التأمين الصحي/السفر مكتتب لمدة صلاحية التأشيرة", null},
+                {"Logement réservé (CROUS) ou attestation d'hébergement obtenue", "Housing booked (CROUS) or accommodation certificate obtained", "السكن محجوز (CROUS) أو شهادة الإيواء متحصل عليها", null},
+                {"Documents apostillés ou légalisés selon votre pays", "Documents apostilled or legalized per your country's rules", "الوثائق مصادق عليها أو مُقوننة حسب بلدك", null},
+            }, order);
+        saveGroup("fr",
+            "Premières semaines en France", "First weeks in France", "الأسابيع الأولى في فرنسا", null,
+            new String[][]{
+                {"VLS-TS validé en ligne via l'ANEF (dans les 3 mois)", "VLS-TS validated online via ANEF (within 3 months)", "التحقق من VLS-TS عبر الإنترنت عبر ANEF (خلال 3 أشهر)", null},
+                {"Inscription à la sécurité sociale étudiante (ameli)", "Registered for student social security (ameli)", "التسجيل في الضمان الاجتماعي الطلابي (ameli)", null},
+                {"Compte bancaire français ouvert", "French bank account opened", "فتح الحساب البنكي الفرنسي", null},
+                {"Inscription administrative finalisée à l'université", "Administrative enrollment finalized at university", "إتمام التسجيل الإداري في الجامعة", null},
+                {"Carte SIM locale obtenue", "Local SIM card obtained", "الحصول على شريحة هاتف محلية", null},
+            }, order);
+    }
+
+    private void seedChecklistItaly() {
+        int order = 0;
+        order = saveGroup("it",
+            "Dossier académique & admission", "Academic file & admission", "الملف الأكاديمي والقبول", null,
+            new String[][]{
+                {"Passeport valide (plus de 12 mois)", "Valid passport (over 12 months)", "جواز سفر ساري المفعول (أكثر من 12 شهرًا)", null},
+                {"Diplômes / relevés de notes traduits et légalisés", "Diplomas / transcripts translated and legalized", "الشهادات / كشوف النقاط مترجمة ومصدّقة", null},
+                {"Dichiarazione di valore ou équivalence CIMEA obtenue", "Dichiarazione di valore or CIMEA equivalence obtained", "الحصول على Dichiarazione di valore أو معادلة CIMEA", null},
+                {"Préinscription Universitaly complétée", "Universitaly pre-enrollment completed", "إتمام التسجيل المسبق عبر Universitaly", null},
+                {"Lettre d'admission de l'université reçue", "University admission letter received", "استلام رسالة القبول من الجامعة", null},
+            }, order);
+        order = saveGroup("it",
+            "Dossier visa & logement", "Visa & housing file", "ملف التأشيرة والسكن", null,
+            new String[][]{
+                {"Formulaire de demande de visa D rempli", "Visa D application form completed", "استمارة طلب تأشيرة D معبأة", null},
+                {"Preuve financière réunie (10 179,85€/an min.)", "Financial proof gathered (€10,179.85/year min.)", "الإثبات المالي جاهز (10179.85 يورو/سنة كحد أدنى)", null},
+                {"Assurance santé souscrite pour la durée du visa", "Health insurance taken out for the visa period", "التأمين الصحي مكتتب لمدة صلاحية التأشيرة", null},
+                {"Logement réservé ou attestation d'hébergement obtenue", "Housing booked or accommodation certificate obtained", "السكن محجوز أو شهادة الإيواء متحصل عليها", null},
+                {"Codice Fiscale demandé au consulat avant le départ", "Codice Fiscale requested at the consulate before departure", "طلب الرمز الضريبي لدى القنصلية قبل المغادرة", null},
+            }, order);
+        saveGroup("it",
+            "Premières semaines en Italie", "First weeks in Italy", "الأسابيع الأولى في إيطاليا", null,
+            new String[][]{
+                {"Codice Fiscale actif (si non obtenu avant le départ)", "Codice Fiscale active (if not obtained before departure)", "الرمز الضريبي نشط (إذا لم يُستخرج قبل المغادرة)", null},
+                {"Permesso di soggiorno demandé (dans les 8 jours ouvrables)", "Permesso di soggiorno applied for (within 8 working days)", "طلب تصريح الإقامة (خلال 8 أيام عمل)", null},
+                {"Inscription au SSN faite à l'ASL (tessera sanitaria)", "SSN registration done at the ASL (tessera sanitaria)", "التسجيل في SSN لدى ASL (tessera sanitaria)", null},
+                {"Compte bancaire ou postal italien ouvert", "Italian bank or post office account opened", "فتح حساب بنكي أو بريدي إيطالي", null},
+                {"Immatriculation universitaire finalisée", "University enrollment finalized", "إتمام التسجيل الجامعي", null},
+                {"Carte SIM locale obtenue", "Local SIM card obtained", "الحصول على شريحة هاتف محلية", null},
+            }, order);
+    }
+
+    private int saveGroup(String country, String groupFr, String groupEn, String groupAr, String groupEs, String[][] rows, int startOrder) {
         int order = startOrder;
         for (String[] row : rows) {
             ChecklistItem item = new ChecklistItem();
+            item.setCountry(country);
             item.setGroupName(groupFr);
             item.setGroupNameEn(groupEn);
             item.setGroupNameAr(groupAr);

@@ -32,7 +32,7 @@ public class ExportController {
         String email = (String) auth.getPrincipal();
         AppUser user = users.findByEmail(email).orElseThrow();
 
-        byte[] pdf = pdfExportService.buildChecklistPdf(user.getDisplayName(), checklistController.myChecklist(auth));
+        byte[] pdf = pdfExportService.buildChecklistPdf(user.getDisplayName(), checklistController.myChecklist(null, auth));
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=masar-checklist.pdf")

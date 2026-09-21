@@ -3,8 +3,11 @@ import { useParams } from 'react-router-dom';
 import { sections as sectionsApi, sponsors as sponsorsApi } from '../api/client.js';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { pickSectionTitle, pickSectionContent, pickNote } from '../i18n/pick.js';
-import { useDestination } from '../i18n/DestinationContext.jsx';
+import { useDestination, COUNTRIES, destPhotoBackground } from '../i18n/DestinationContext.jsx';
 import { useNationality, NATIONALITIES } from '../i18n/NationalityContext.jsx';
+import TabbedHtmlContent from '../components/TabbedHtmlContent.jsx';
+
+const OVERVIEW_LABEL = { fr: 'Aperçu', en: 'Overview', ar: 'نظرة عامة', es: 'Resumen' };
 
 export default function Section() {
   const { slug } = useParams();
@@ -29,12 +32,16 @@ export default function Section() {
   if (loading) return <p className="text-muted">Loading…</p>;
   if (!section) return <p className="text-muted">Section not found.</p>;
 
+  const countryLabel = COUNTRIES.find((c) => c.code === country)?.label || '';
+
   return (
     <div>
-      <div className="masar-eyebrow">Section {String(section.orderIndex).padStart(2, '0')}</div>
-      <h1 className="masar-page-title">{pickSectionTitle(section, lang)}</h1>
+      <div className="m-banner" style={destPhotoBackground(country, { w: 1300, q: 82 })}>
+        <div className="eyebrow">{countryLabel} · Section {String(section.orderIndex).padStart(2, '0')}</div>
+        <h1 className="title">{pickSectionTitle(section, lang)}</h1>
+      </div>
 
-      <div className="masar-content" dangerouslySetInnerHTML={{ __html: pickSectionContent(section, lang) }} />
+      <TabbedHtmlContent html={pickSectionContent(section, lang)} overviewLabel={OVERVIEW_LABEL[lang] || OVERVIEW_LABEL.en} />
 
       {pickNote(section, nationality) && (
         <div className="masar-nationality-note">

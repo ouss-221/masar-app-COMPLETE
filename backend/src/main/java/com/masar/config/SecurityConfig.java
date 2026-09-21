@@ -39,10 +39,35 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // public: reading guide content, sponsors, and auth endpoints
+                // profile endpoints need a logged-in user, even though they live
+                // under /api/auth - this rule must come BEFORE the broader
+                // /api/auth/** permitAll below, since Spring Security matches
+                // requestMatchers in order and the first match wins.
+                .requestMatchers("/api/auth/me", "/api/auth/change-password").authenticated()
+                // public: reading guide content, sponsors, and the rest of auth (login, register, reset, etc.)
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/sections/**").permitAll()
                 .requestMatchers("/api/sponsors/**").permitAll()
+                .requestMatchers("/api/universities/**").permitAll()
+                // Community headline counts are public (a guest should see "why join"
+                // before creating an account) - must come before the broader
+                // /api/community/** authenticated rule below, same ordering reason as
+                // /api/auth/me above.
+                .requestMatchers("/api/community/counts").permitAll()
+                .requestMatchers("/api/community/**").authenticated()
+                // Browsing city-wide activity pins/cards is public, same reasoning as
+                // community counts above; creating/RSVPing still needs a login (see
+                // ActivityController) - this specific rule must come before the
+                // broader /api/activities/** authenticated rule right below it.
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/activities/city").permitAll()
+                .requestMatchers("/api/activities/**").authenticated()
+                // Browsing real OSM venues (list + single place) is public too; only
+                // the manual re-sync endpoint needs a login, so that one specific
+                // rule must come before the general GET permitAll below it.
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/places/sync").authenticated()
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/places/**").permitAll()
+                .requestMatchers("/api/location/**").authenticated()
+                .requestMatchers("/api/students/**").authenticated()
                 // requires a logged-in user: personal checklist progress, PDF export
                 .requestMatchers("/api/checklist/**").authenticated()
                 .requestMatchers("/api/export/**").authenticated()
@@ -55,7 +80,10 @@ public class SecurityConfig {
 
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(allowedOrigins.split(",")));
+        // Patterns (not just exact origins) so the dev frontend works from a phone
+        // on the same Wi-Fi too - Vite's --host picks whatever LAN IP/port are
+        // free, which changes machine to machine and even run to run.
+        config.setAllowedOriginPatterns(List.of(allowedOrigins.split(",")));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

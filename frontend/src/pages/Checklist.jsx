@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { checklist as checklistApi, exportApi } from '../api/client.js';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { pickGroupName, pickItemText } from '../i18n/pick.js';
+import { useDestination, COUNTRIES } from '../i18n/DestinationContext.jsx';
+import { FLAG_MAP } from '../components/Flags.jsx';
 
 export default function Checklist() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const { lang } = useLanguage();
+  const { country, setCountry } = useDestination();
 
   useEffect(() => {
-    checklistApi.mine()
+    setLoading(true);
+    checklistApi.mine(country)
       .then((res) => setItems(res.data))
       .catch(() => setItems([]))
       .finally(() => setLoading(false));
-  }, []);
+  }, [country]);
 
   const toggle = async (item) => {
     const nextDone = !item.done;
@@ -39,6 +44,29 @@ export default function Checklist() {
   const done = items.filter((i) => i.done).length;
   const pct = items.length ? Math.round((done / items.length) * 100) : 0;
 
+  const countrySwitcher = (
+    <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+      {COUNTRIES.map((c) => {
+        const Flag = FLAG_MAP[c.code];
+        return (
+          <button
+            key={c.code}
+            onClick={() => setCountry(c.code)}
+            className="masar-dest-btn"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              background: c.code === country ? 'var(--m-teal)' : 'var(--m-surface)',
+              color: c.code === country ? '#fff' : 'var(--m-navy)',
+              border: '1px solid var(--m-line)', borderRadius: 999, padding: '6px 14px', fontSize: 13,
+            }}
+          >
+            <Flag size={16} /> {c.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+
   if (loading) return <p className="text-muted">Loading…</p>;
 
   if (items.length === 0) {
@@ -46,6 +74,7 @@ export default function Checklist() {
     return (
       <div>
         <h1 className="masar-page-title">My checklist</h1>
+        {countrySwitcher}
         {loggedIn ? (
           <p className="text-muted">No checklist items found.</p>
         ) : (
@@ -63,12 +92,15 @@ export default function Checklist() {
       <p className="text-muted mb-3" style={{ fontSize: 14.5 }}>
         Saved to your account — pick up where you left off on any device.
       </p>
+      {countrySwitcher}
 
-      <div className="d-flex align-items-center gap-3 mb-4">
+      <Link to="/progress" className="d-flex align-items-center gap-3 mb-4" style={{ textDecoration: 'none', color: 'inherit' }}>
         <div className="masar-progress-bar flex-grow-1">
           <div className="masar-progress-fill" style={{ width: `${pct}%` }} />
         </div>
         <div style={{ fontSize: 13, opacity: 0.75, whiteSpace: 'nowrap' }}>{done} / {items.length} done</div>
+      </Link>
+      <div className="d-flex align-items-center gap-2 mb-4">
         <button className="masar-reset-btn" onClick={resetAll}>Reset</button>
         <button className="btn btn-sm btn-outline-dark" onClick={() => exportApi.downloadChecklistPdf()}>
           Export PDF

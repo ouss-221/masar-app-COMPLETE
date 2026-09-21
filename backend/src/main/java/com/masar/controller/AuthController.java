@@ -13,9 +13,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 @RestController
@@ -51,7 +53,7 @@ public class AuthController {
 
     public record RegisterRequest(
             @Email String email, @NotBlank String password, String displayName,
-            String targetCity, String university, String programType) {}
+            String originCountry, String targetCountry, String targetCity, String university, String programType) {}
 
     public record LoginRequest(@Email String email, @NotBlank String password) {}
     public record RefreshRequest(@NotBlank String refreshToken) {}
@@ -60,8 +62,21 @@ public class AuthController {
     public record ResendVerificationRequest(@Email String email) {}
 
     public record AuthResponse(
-            String accessToken, String refreshToken, String email, String displayName,
-            String targetCity, String university, String programType, boolean emailVerified) {}
+            String accessToken, String refreshToken, String email, String displayName, String originCountry,
+            String targetCountry, String targetCity, String university, String programType, boolean emailVerified) {}
+
+    // id: exposed so the frontend can compare it against an Activity's hostId
+    // (see ActivityController.CityActivityView) to show "you're the host"
+    // controls, without adding a second lookup endpoint.
+    public record ProfileResponse(
+            Long id, String email, String displayName, String originCountry, String targetCountry, String targetCity,
+            String university, String programType, boolean emailVerified, boolean discoverable, String birthDate) {}
+
+    public record UpdateProfileRequest(
+            String displayName, String originCountry, String targetCountry, String targetCity, String university,
+            String programType, Boolean discoverable, String birthDate) {}
+
+    public record ChangePasswordRequest(@NotBlank String currentPassword, @NotBlank String newPassword) {}
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
@@ -72,6 +87,8 @@ public class AuthController {
         user.setEmail(req.email());
         user.setPasswordHash(encoder.encode(req.password()));
         user.setDisplayName(req.displayName());
+        user.setOriginCountry(req.originCountry());
+        user.setTargetCountry(req.targetCountry());
         user.setTargetCity(req.targetCity());
         user.setUniversity(req.university());
         user.setProgramType(req.programType());
@@ -106,8 +123,8 @@ public class AuthController {
             AppUser user = rotated.getUser();
             String accessToken = jwtUtil.generateToken(user.getEmail());
             return ResponseEntity.ok(new AuthResponse(
-                    accessToken, rotated.getToken(), user.getEmail(), user.getDisplayName(),
-                    user.getTargetCity(), user.getUniversity(), user.getProgramType(), user.isEmailVerified()));
+                    accessToken, rotated.getToken(), user.getEmail(), user.getDisplayName(), user.getOriginCountry(),
+                    user.getTargetCountry(), user.getTargetCity(), user.getUniversity(), user.getProgramType(), user.isEmailVerified()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(401).body("Session expired, please log in again.");
         }
@@ -117,6 +134,54 @@ public class AuthController {
     public ResponseEntity<?> logout(@RequestBody RefreshRequest req) {
         refreshTokenService.revoke(req.refreshToken());
         return ResponseEntity.ok().build();
+    }
+
+    // ---- Profile (requires a logged-in user - see SecurityConfig for the auth rule) ----
+
+    @GetMapping("/me")
+    public ResponseEntity<?> me(Authentication auth) {
+        return ResponseEntity.ok(profileDto(currentUser(auth)));
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<?> updateMe(@RequestBody UpdateProfileRequest req, Authentication auth) {
+        AppUser user = currentUser(auth);
+        user.setDisplayName(req.displayName());
+        user.setOriginCountry(req.originCountry());
+        user.setTargetCountry(req.targetCountry());
+        user.setTargetCity(req.targetCity());
+        user.setUniversity(req.university());
+        user.setProgramType(req.programType());
+        if (req.discoverable() != null) user.setDiscoverable(req.discoverable());
+        if (req.birthDate() != null) {
+            if (req.birthDate().isBlank()) {
+                user.setBirthDate(null);
+            } else {
+                try {
+                    user.setBirthDate(LocalDate.parse(req.birthDate()));
+                } catch (Exception e) {
+                    return ResponseEntity.badRequest().body("Invalid date of birth.");
+                }
+            }
+        }
+        users.save(user);
+        return ResponseEntity.ok(profileDto(user));
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest req, Authentication auth) {
+        AppUser user = currentUser(auth);
+        if (!encoder.matches(req.currentPassword(), user.getPasswordHash())) {
+            return ResponseEntity.status(400).body("Current password is incorrect.");
+        }
+        user.setPasswordHash(encoder.encode(req.newPassword()));
+        users.save(user);
+        // Log every device out for safety, same as a password reset via email -
+        // then immediately issue this device a fresh session (new tokens below),
+        // so the person who just changed their password isn't logged out too.
+        refreshTokenRepository.findByUserAndRevokedFalse(user)
+                .forEach(rt -> { rt.setRevoked(true); refreshTokenRepository.save(rt); });
+        return ResponseEntity.ok(buildAuthResponse(user));
     }
 
     // ---- Email verification ----
@@ -178,7 +243,19 @@ public class AuthController {
         String accessToken = jwtUtil.generateToken(user.getEmail());
         RefreshToken refreshToken = refreshTokenService.issue(user);
         return new AuthResponse(
-                accessToken, refreshToken.getToken(), user.getEmail(), user.getDisplayName(),
-                user.getTargetCity(), user.getUniversity(), user.getProgramType(), user.isEmailVerified());
+                accessToken, refreshToken.getToken(), user.getEmail(), user.getDisplayName(), user.getOriginCountry(),
+                user.getTargetCountry(), user.getTargetCity(), user.getUniversity(), user.getProgramType(), user.isEmailVerified());
+    }
+
+    private ProfileResponse profileDto(AppUser user) {
+        return new ProfileResponse(
+                user.getId(), user.getEmail(), user.getDisplayName(), user.getOriginCountry(), user.getTargetCountry(), user.getTargetCity(),
+                user.getUniversity(), user.getProgramType(), user.isEmailVerified(), user.isDiscoverable(),
+                user.getBirthDate() == null ? null : user.getBirthDate().toString());
+    }
+
+    private AppUser currentUser(Authentication auth) {
+        String email = (String) auth.getPrincipal();
+        return users.findByEmail(email).orElseThrow();
     }
 }

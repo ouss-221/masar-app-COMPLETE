@@ -33,6 +33,27 @@ export function pickItemText(item, lang) {
   return item.text;
 }
 
+export function pickUniDescription(u, lang) {
+  if (!u) return '';
+  if (lang === 'en') return u.descriptionEn || u.descriptionFr;
+  if (lang === 'ar') return u.descriptionAr || u.descriptionFr;
+  return u.descriptionFr;
+}
+
+export function pickUniFields(u, lang) {
+  if (!u) return '';
+  if (lang === 'en') return u.fieldsEn || u.fieldsFr;
+  if (lang === 'ar') return u.fieldsAr || u.fieldsFr;
+  return u.fieldsFr;
+}
+
+export function pickUniTuitionNote(u, lang) {
+  if (!u) return '';
+  if (lang === 'en') return u.tuitionNoteEn || u.tuitionNoteFr;
+  if (lang === 'ar') return u.tuitionNoteAr || u.tuitionNoteFr;
+  return u.tuitionNoteFr;
+}
+
 export function pickNote(section, nationality) {
   if (!section) return null;
   if (nationality === 'ma') return section.noteMa || null;

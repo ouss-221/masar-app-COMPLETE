@@ -34,14 +34,15 @@ public class ChecklistController {
                                  String text, String textEn, String textAr, String textEs, boolean done) {}
     public record ToggleRequest(boolean done) {}
 
-    // GET /api/checklist -> every item, merged with this user's done/not-done state
+    // GET /api/checklist              -> Spain checklist (default), merged with this user's done/not-done state
+    // GET /api/checklist?country=fr   -> that destination's checklist instead - steps genuinely differ by country
     @GetMapping
-    public List<ChecklistView> myChecklist(Authentication auth) {
+    public List<ChecklistView> myChecklist(@RequestParam(required = false) String country, Authentication auth) {
         AppUser user = currentUser(auth);
         Map<Long, Boolean> doneMap = progress.findByUser(user).stream()
                 .collect(Collectors.toMap(p -> p.getChecklistItem().getId(), ChecklistProgress::isDone));
 
-        return items.findAllByOrderByGroupNameAscOrderIndexAsc().stream()
+        return items.findAllByCountryOrderByOrderIndexAsc(country == null ? "es" : country).stream()
                 .map(i -> new ChecklistView(i.getId(), i.getGroupName(), i.getGroupNameEn(), i.getGroupNameAr(), i.getGroupNameEs(),
                         i.getText(), i.getTextEn(), i.getTextAr(), i.getTextEs(),
                         doneMap.getOrDefault(i.getId(), false)))

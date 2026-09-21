@@ -30,11 +30,16 @@ services:
       DB_USER: masar_user
       DB_PASSWORD: masar_pass
       JWT_SECRET: dev-only-secret-change-me-please-1234567890
-      CORS_ORIGINS: "http://localhost:5173,capacitor://localhost,http://localhost,https://localhost"
-      # Leave RESEND_API_KEY empty to run without sending real emails (verification/reset
-      # links are just printed to these backend logs instead). Fill it in once you have
-      # a Resend account and a verified sending domain.
-      RESEND_API_KEY: ""
+      # Wildcard LAN patterns so opening the dev site from a phone on the same
+      # Wi-Fi (via `npm run dev -- --host`, whatever IP/port Vite picks) also
+      # works, not just from the PC's own localhost.
+      CORS_ORIGINS: "http://localhost:*,http://127.0.0.1:*,capacitor://localhost,http://localhost,https://localhost,http://192.168.*.*:*,http://10.*.*.*:*,http://172.*.*.*:*"
+      # Read from a .env file next to this docker-compose.yml (git-ignored, never
+      # committed) rather than hardcoded here, so the real key never ends up in
+      # version control. Leave the .env file's RESEND_API_KEY empty/unset to run
+      # without sending real emails (verification/reset links are just printed
+      # to these backend logs instead).
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
       RESEND_FROM_EMAIL: "onboarding@resend.dev"
       FRONTEND_URL: "http://localhost:5173"
     ports:

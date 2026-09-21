@@ -12,6 +12,12 @@ public class ChecklistItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Which destination guide this checklist item belongs to - "es", "fr" or "it".
+    // Steps are genuinely different per destination (TIE vs titre de séjour vs
+    // permesso di soggiorno), so this is not shared across countries.
+    @Column(nullable = false, length = 10)
+    private String country = "es";
+
     @Column(nullable = false, length = 80)
     private String groupName;   // French - "Before you leave" etc.
 
