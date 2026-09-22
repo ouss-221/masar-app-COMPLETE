@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { sections as sectionsApi, checklist as checklistApi } from '../api/client.js';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
-import { useDestination, COUNTRIES, destPhotoBackground } from '../i18n/DestinationContext.jsx';
-import { useNationality, NATIONALITIES } from '../i18n/NationalityContext.jsx';
+import { useDestination, COUNTRIES } from '../i18n/DestinationContext.jsx';
 import { pickSectionTitle } from '../i18n/pick.js';
 import { FEATURE_ICON_MAP, IconCheck, IconChevronRight, IconArrowRight } from '../components/Icons.jsx';
-import { FLAG_MAP } from '../components/Flags.jsx';
 
 // Matches the app mockup's hero copy exactly (a fixed tagline, not a
 // personalized one) - kept local since nothing else reuses it.
@@ -41,23 +39,21 @@ const FEATURE_DESC = {
   life: 'Life, culture, health and more',
 };
 
-function ChecklistArt({ className }) {
-  return (
-    <svg className={className} viewBox="0 0 160 90" aria-hidden="true">
-      <path d="M14 68C44 30 96 78 146 22" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="1 8" strokeLinecap="round" opacity="0.7" />
-      <circle cx="14" cy="68" r="6" fill="currentColor" opacity="0.55" />
-      <circle cx="146" cy="22" r="6" fill="currentColor" opacity="0.85" />
-      <path d="M146 12a10 10 0 0 1 0 20 10 12 0 0 1-10-16c1-3 5-4 10-4Z" fill="currentColor" opacity="0.85" />
-    </svg>
-  );
-}
+// Solid per-destination gradients - matches the "Path" design concept's
+// bold-color card treatment (Home hero + destination cards use these
+// instead of photos, so the app's signature color system is what students
+// actually see, not stock photography).
+const DEST_GRADIENT = {
+  es: 'linear-gradient(165deg,#FF6A45,var(--m-teal-deep))',
+  fr: 'linear-gradient(165deg,#5A4AA8,var(--m-dusk))',
+  it: 'linear-gradient(165deg,#E8A33D,#8A5A12)',
+};
 
 export default function Home() {
   const [sections, setSections] = useState([]);
   const [checklistItems, setChecklistItems] = useState([]);
   const { lang } = useLanguage();
-  const { country, setCountry } = useDestination();
-  const { nationality, setNationality } = useNationality();
+  const { country } = useDestination();
   const userName = localStorage.getItem('masar_user_name') || localStorage.getItem('masar_user_email');
 
   useEffect(() => {
@@ -83,36 +79,28 @@ export default function Home() {
   return (
     <div className="m-page">
       <div className="m-greeting-name">Hello{userName ? `, ${userName}` : ''} 👋</div>
-      <div className="m-greeting-sub">Your journey to Europe starts here.</div>
+      <div className="m-greeting-sub">Your path to <em className="m-em">Europe</em> starts here.</div>
 
-      <div className="m-hero" style={destPhotoBackground(country, { w: 1300, q: 82 })}>
+      <div className="m-hero">
         <span className="m-hero-badge">Featured</span>
         <h2>{hero.title}</h2>
         <p>{hero.sub}</p>
         <div className="m-hero-btn"><IconArrowRight size={16} /></div>
       </div>
 
-      <div className="m-flag-row">
-        {NATIONALITIES.map((n) => {
-          const Flag = FLAG_MAP[n.code];
-          return (
-            <button key={n.code} className={'m-flag-chip' + (n.code === nationality ? ' active' : '')} onClick={() => setNationality(n.code)}>
-              <span className="circle"><Flag size={26} /></span>
-              <span className="label">{n.label}</span>
-            </button>
-          );
-        })}
-        <span className="m-flag-arrow">→</span>
-        {COUNTRIES.map((c) => {
-          const Flag = FLAG_MAP[c.code];
-          return (
-          <button key={c.code} className={'m-flag-chip' + (c.code === country ? ' active' : '')} onClick={() => setCountry(c.code)}>
-            <span className="circle"><Flag size={26} /></span>
-            <span className="label">{c.label}</span>
-          </button>
-          );
-        })}
-      </div>
+      <Link to="/community" className="m-community-teaser">
+        <span className="avatars">
+          <span style={{ background: 'var(--m-teal)' }}>A</span>
+          <span style={{ background: 'var(--m-orange)' }}>M</span>
+          <span style={{ background: 'var(--m-blue)' }}>S</span>
+          <span style={{ background: 'var(--m-green)' }}>L</span>
+        </span>
+        <span className="text">
+          <strong>Open to every student</strong>
+          <span>From anywhere, heading anywhere — see who's around.</span>
+        </span>
+        <IconChevronRight size={14} />
+      </Link>
 
       <div className="m-feature-grid">
         {features.map((f) => {
@@ -137,10 +125,9 @@ export default function Home() {
         <div className="m-checklist-icon"><IconCheck size={18} /></div>
         <div>
           <h3>My Checklist</h3>
-          <p>Track your progress, don't miss anything.</p>
+          <p>Don't miss a step.</p>
         </div>
         <span className="m-checklist-chev"><IconChevronRight /></span>
-        <ChecklistArt className="m-checklist-art" />
       </Link>
 
       <div className="m-section-head">
@@ -151,11 +138,14 @@ export default function Home() {
         <span className="m-see-all">See all <IconChevronRight size={14} /></span>
       </div>
       <div className="m-dest-scroll">
+        {/* Display-only, like the design concept's cards - your destination is
+            set once during onboarding (or changed later from Profile), so
+            tapping here doesn't silently switch it. */}
         {COUNTRIES.map((c) => (
-          <button key={c.code} onClick={() => setCountry(c.code)} className="m-dest-card" style={destPhotoBackground(c.code, { w: 700, q: 80 })}>
+          <div key={c.code} className="m-dest-card" style={{ background: DEST_GRADIENT[c.code] || DEST_GRADIENT.es }}>
             <span className="go"><IconArrowRight size={13} /></span>
             <span className="pill"><span className="flag">{c.flag}</span>{c.label}</span>
-          </button>
+          </div>
         ))}
       </div>
     </div>
