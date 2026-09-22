@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Circle, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Circle, Popup, Pane, useMap } from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { CITY_COORDINATES, COUNTRY_FALLBACK_CENTER } from '../data/cityCoordinates.js';
 import { MAP_LAYERS, pinIcon, myLocationIcon } from '../utils/mapPins.js';
@@ -23,9 +24,22 @@ function iconFor(categoryKey) {
 const ME_ICON = myLocationIcon();
 
 // Recenters the map on myPosition whenever it changes (e.g. right after a
-// "locate me" tap) without fighting the user's own pan/zoom afterward -
-// only fires again if the position itself changes.
-function RecenterOnPosition({ position, zoom = 15 }) {
+// "locate me" tap, or the automatic on-load locate) without fighting the
+// user's own pan/zoom afterward - only fires again if the position itself
+// changes.
+//
+// Real report: "it's showing but the second I refresh it goes [away]." This
+// used to always snap to a tight zoom=15 around the live GPS fix alone - if
+// an already-visible activity (e.g. one just created a short walk from the
+// exact spot the phone's GPS reports, which can easily differ by a few
+// hundred meters to a couple km) wasn't within that much tighter viewport,
+// the auto-recenter would scroll it straight off-screen a moment after the
+// page loaded and looked fine. Now, when there are pins to consider, it fits
+// the map to a bounds that includes the live position AND every currently-
+// loaded activity, so recentering on "me" can never strand an existing pin
+// out of view; maxZoom keeps it from zooming in absurdly tight when
+// everything happens to be right next to each other.
+function RecenterOnPosition({ position, pins = [], zoom = 15 }) {
   const map = useMap();
   const lastRef = useRef(null);
   useEffect(() => {
@@ -33,8 +47,13 @@ function RecenterOnPosition({ position, zoom = 15 }) {
     const last = lastRef.current;
     if (last && last[0] === position[0] && last[1] === position[1]) return;
     lastRef.current = position;
-    map.setView(position, zoom);
-  }, [position, zoom, map]);
+    if (pins.length > 0) {
+      const bounds = L.latLngBounds([position, ...pins.map((p) => [p.lat, p.lng])]);
+      map.fitBounds(bounds, { padding: [48, 48], maxZoom: zoom });
+    } else {
+      map.setView(position, zoom);
+    }
+  }, [position, zoom, map, pins]);
   return null;
 }
 
@@ -99,8 +118,22 @@ export default function ExploreMap({ activities = [], country, city, onSelectAct
             </Marker>
           )
         )}
-        {myPosition && <Marker position={myPosition} icon={ME_ICON} />}
-        <RecenterOnPosition position={myPosition} />
+        {/* A newly-created activity often sits right on top of the host's own
+            live position (the wizard's map opens centered there, and it's easy
+            not to drag the pin away) - a real report: "I made one but I can't
+            see it on the map." It IS there (the count badge for its category
+            proves the whole city sees it - GET /api/activities/city has no
+            per-caller filtering), it was just hidden underneath this "you are
+            here" dot. A dedicated pane below both the vector overlayPane
+            (Circles, z400) and the markerPane (Markers, z600) guarantees any
+            activity - pin or fuzzy-area circle - always paints above it,
+            instead of the two competing on insertion order/latitude. */}
+        {myPosition && (
+          <Pane name="m-my-location-pane" style={{ zIndex: 350 }}>
+            <Marker position={myPosition} icon={ME_ICON} />
+          </Pane>
+        )}
+        <RecenterOnPosition position={myPosition} pins={pinned} />
       </MapContainer>
     </div>
   );

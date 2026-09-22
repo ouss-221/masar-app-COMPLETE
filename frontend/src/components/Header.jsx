@@ -12,11 +12,8 @@ export default function Header() {
   return (
     <div className="m-header">
       <Link to="/" className="m-brand" style={{ textDecoration: 'none' }}>
-        <div className="m-brand-mark"><IconMasarMark size={28} /></div>
-        <div>
-          <div className="m-brand-word">MASAR</div>
-          <div className="m-brand-ar">مسار</div>
-        </div>
+        <div className="m-brand-badge"><IconMasarMark size={19} /></div>
+        <div className="m-brand-word">MASAR</div>
       </Link>
 
       <div className="m-header-icons">

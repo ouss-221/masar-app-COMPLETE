@@ -8,7 +8,7 @@ import { ACTIVITY_CATEGORIES, categoryFor } from '../data/activityCategories.js'
 import { CITY_COORDINATES, COUNTRY_FALLBACK_CENTER, haversineKm, MAX_ACTIVITY_DISTANCE_KM } from '../data/cityCoordinates.js';
 import ExploreMap from '../components/ExploreMap.jsx';
 import ActivityMap from '../components/ActivityMap.jsx';
-import { IconMap, IconNavigation } from '../components/Icons.jsx';
+import { IconMap, IconNavigation, IconPlus } from '../components/Icons.jsx';
 
 const TEXT = {
   fr: {
@@ -19,7 +19,7 @@ const TEXT = {
     locateMe: 'Ma position', locating: 'Localisation…',
     locateUnsupported: "Votre navigateur ne prend pas en charge la géolocalisation.",
     locateDenied: "Impossible d'accéder à votre position — vérifiez l'autorisation de localisation du navigateur.",
-    addActivity: '+ Ajouter une activité',
+    addActivity: 'Ajouter une activité',
     travelersHere: (n) => `${n} voyageur${n > 1 ? 's' : ''} ici`,
     travelersCta: 'Voir qui est à proximité',
     private: 'Privé', ageBadge: (min, max) => min && max ? `${min}-${max} ans` : min ? `${min}+ ans` : `jusqu'à ${max} ans`,
@@ -44,6 +44,7 @@ const TEXT = {
     joinPrivate: 'Privé', joinPrivateHint: "Vous approuvez chaque demande avant qu'elle rejoigne.",
     back: 'Retour', next: 'Suivant', addToMap: 'Ajouter à la carte !',
     cancel: 'Annuler', activityCreateError: "Impossible de créer l'activité. Réessayez.",
+    activityNetworkError: "Connexion au serveur impossible. Vérifiez votre connexion et réessayez.",
     ageGateGeneric: "Vous ne remplissez pas la tranche d'âge de cette activité.",
     addBirthDate: 'Ajouter ma date de naissance',
     tooFar: (c, km) => `Trop loin de ${c} (${km} km) — placez le repère à moins de ${MAX_ACTIVITY_DISTANCE_KM} km.`,
@@ -56,7 +57,7 @@ const TEXT = {
     locateMe: 'My location', locating: 'Locating…',
     locateUnsupported: "Your browser doesn't support geolocation.",
     locateDenied: "Couldn't get your location — check your browser's location permission for this site.",
-    addActivity: '+ Add activity',
+    addActivity: 'Add activity',
     travelersHere: (n) => `${n} traveler${n > 1 ? 's' : ''} here`,
     travelersCta: 'See who’s nearby',
     private: 'Private', ageBadge: (min, max) => min && max ? `${min}-${max}` : min ? `${min}+` : `up to ${max}`,
@@ -81,6 +82,7 @@ const TEXT = {
     joinPrivate: 'Private', joinPrivateHint: 'You approve each request before they join.',
     back: 'Back', next: 'Next', addToMap: 'Add to Map!',
     cancel: 'Cancel', activityCreateError: "Couldn't create the activity. Please try again.",
+    activityNetworkError: "Couldn't reach the server. Check your connection and try again.",
     ageGateGeneric: "You don't meet this activity's age range.",
     addBirthDate: 'Add my date of birth',
     tooFar: (c, km) => `Too far from ${c} (${km} km away) — drag the pin to within ${MAX_ACTIVITY_DISTANCE_KM} km.`,
@@ -93,7 +95,7 @@ const TEXT = {
     locateMe: 'موقعي', locating: 'جارٍ تحديد الموقع…',
     locateUnsupported: 'متصفحك لا يدعم تحديد الموقع الجغرافي.',
     locateDenied: 'تعذّر الوصول إلى موقعك — تحقق من إذن الموقع في المتصفح لهذا الموقع.',
-    addActivity: '+ إضافة نشاط',
+    addActivity: 'إضافة نشاط',
     travelersHere: (n) => `${n} مسافر هنا`,
     travelersCta: 'مشاهدة من هو قريب',
     private: 'خاص', ageBadge: (min, max) => min && max ? `${min}-${max}` : min ? `+${min}` : `حتى ${max}`,
@@ -118,6 +120,7 @@ const TEXT = {
     joinPrivate: 'خاص', joinPrivateHint: 'توافق على كل طلب قبل انضمامه.',
     back: 'رجوع', next: 'التالي', addToMap: 'أضف إلى الخريطة!',
     cancel: 'إلغاء', activityCreateError: 'تعذّر إنشاء النشاط. حاول مرة أخرى.',
+    activityNetworkError: 'تعذّر الاتصال بالخادم. تحقق من اتصالك وحاول مرة أخرى.',
     ageGateGeneric: 'أنت لا تندرج ضمن الفئة العمرية لهذا النشاط.',
     addBirthDate: 'إضافة تاريخ ميلادي',
     tooFar: (c, km) => `بعيد جدًا عن ${c} (${km} كم) — اسحب العلامة لتكون ضمن ${MAX_ACTIVITY_DISTANCE_KM} كم.`,
@@ -337,7 +340,26 @@ export default function Explore() {
       setShowWizard(false);
       load();
     } catch (err) {
-      setCreateError(err.response?.data || t.activityCreateError);
+      // The backend usually replies with a plain-text reason (age gate,
+      // too-far-from-the-city, invalid date...) which is just a string and
+      // renders directly. But a few other cases used to fall through to the
+      // generic fallback with no way to tell what actually happened - a real
+      // complaint ("it said couldn't be created" with no further detail):
+      //  - no response at all (network/CORS failure, or the backend hasn't
+      //    picked up a recent rebuild yet) - err.response is undefined.
+      //  - a non-string body, e.g. Spring's default JSON error object for an
+      //    unhandled exception ({timestamp, status, error, message, path}) -
+      //    rendering that object directly would crash the page instead of
+      //    showing a message.
+      // eslint-disable-next-line no-console
+      console.error('Activity creation failed:', err);
+      const data = err.response?.data;
+      let message;
+      if (typeof data === 'string' && data) message = data;
+      else if (data && typeof data === 'object') message = data.message || data.error || t.activityCreateError;
+      else if (!err.response) message = t.activityNetworkError;
+      else message = t.activityCreateError;
+      setCreateError(message);
     } finally {
       setCreating(false);
     }
@@ -414,10 +436,6 @@ export default function Explore() {
       <div className="m-section-title" style={{ marginTop: 10 }}>{t.title}</div>
       <div className="m-section-sub">{t.sub}</div>
 
-      <button type="button" className="btn btn-dark btn-sm" style={{ marginTop: 8 }} onClick={openWizard}>
-        {t.addActivity}
-      </button>
-
       <div className="m-explore-chips">
         <button type="button" className={'m-explore-chip' + (filter === 'all' ? ' active' : '')} onClick={() => setFilter('all')}>
           {t.all} ({allActivities.length})
@@ -429,9 +447,9 @@ export default function Explore() {
         ))}
       </div>
 
-      {rsvpError && <p style={{ fontSize: 12.5, color: '#B23A3A', marginTop: 8 }}>{rsvpError}</p>}
+      {rsvpError && <p className="m-page-error">{rsvpError}</p>}
 
-      {loading && <p style={{ opacity: 0.6, fontSize: 14, marginTop: 12 }}>{t.loading}</p>}
+      {loading && <p className="m-page-loading">{t.loading}</p>}
 
       {!loading && (
         <>
@@ -477,7 +495,7 @@ export default function Explore() {
           )}
 
           {filtered.length === 0 && (
-            <p style={{ marginTop: 16, fontSize: 13, opacity: 0.7 }}>{t.empty}</p>
+            <p className="m-page-empty">{t.empty}</p>
           )}
 
           <button
@@ -488,6 +506,13 @@ export default function Explore() {
             {view === 'map' ? t.list : <><IconMap size={15} /> {t.map}</>}
           </button>
         </>
+      )}
+
+      {!showWizard && (
+        <button type="button" className="m-fab" onClick={openWizard}>
+          <span className="m-fab-icon"><IconPlus size={14} /></span>
+          {t.addActivity}
+        </button>
       )}
 
       {showWizard && (
@@ -513,10 +538,10 @@ export default function Explore() {
 
             {step === 1 && (
               <div>
-                <label className="form-label small">{t.wantLabel}</label>
+                <label className="m-wizard-label">{t.wantLabel}</label>
                 <input className="form-control mb-3" placeholder={t.wantPlaceholder} value={wizard.title} autoFocus
                   onChange={(e) => setWizard((s) => ({ ...s, title: e.target.value }))} />
-                <label className="form-label small">{t.moreDetails}</label>
+                <label className="m-wizard-label" style={{ marginTop: 12 }}>{t.moreDetails}</label>
                 <textarea className="form-control" rows={2} value={wizard.description}
                   onChange={(e) => setWizard((s) => ({ ...s, description: e.target.value }))} />
               </div>
@@ -615,7 +640,7 @@ export default function Explore() {
                   ))}
                 </div>
 
-                <label className="form-label small">{t.ageRange}</label>
+                <label className="m-wizard-label">{t.ageRange}</label>
                 <div className="m-age-range">
                   <select className="form-select" value={wizard.minAge} onChange={(e) => setWizard((s) => ({ ...s, minAge: e.target.value }))}>
                     <option value="">—</option>
@@ -628,7 +653,7 @@ export default function Explore() {
                   </select>
                 </div>
 
-                <label className="form-label small">{t.capacity}</label>
+                <label className="m-wizard-label" style={{ marginTop: 12 }}>{t.capacity}</label>
                 <input type="number" min="1" className="form-control" value={wizard.capacity}
                   onChange={(e) => setWizard((s) => ({ ...s, capacity: e.target.value }))} />
               </div>

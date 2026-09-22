@@ -1,5 +1,6 @@
 package com.masar.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,21 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // Without this, Spring Security's default behavior is to reject a
+            // request with a missing/expired/invalid JWT with 403 Forbidden
+            // (it treats the anonymous principal AnonymousAuthenticationFilter
+            // assigns as "authenticated but not allowed" rather than "not
+            // authenticated"), never 401. The frontend's axios interceptor
+            // (client.js) only auto-refreshes the access token and retries on
+            // a 401, so every request whose token had simply expired - the
+            // normal case after 15 minutes of use - surfaced as a dead-end
+            // "Something went wrong" instead of a transparent silent refresh.
+            // Forcing 401 here for any unauthenticated request restores that
+            // flow for every endpoint, not just profile-photo (where this was
+            // first noticed).
+            .exceptionHandling(ex -> ex.authenticationEntryPoint(
+                (request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED)
+            ))
             .authorizeHttpRequests(auth -> auth
                 // profile endpoints need a logged-in user, even though they live
                 // under /api/auth - this rule must come BEFORE the broader
