@@ -216,10 +216,16 @@ export const profilePhoto = {
   fetch: (userId) => api.get(`/api/profile-photo/${userId || 'me'}`, { responseType: 'blob' }),
   // file: a File/Blob, already cropped+compressed client-side (see
   // AvatarEditor.jsx) - the backend still re-validates type and size.
+  //
+  // No explicit Content-Type header here - axios/the browser must generate
+  // its own "multipart/form-data; boundary=..." for a FormData body. Setting
+  // it manually (even to the "right-looking" value) strips that boundary
+  // parameter, which breaks the multipart request before it ever reaches
+  // Spring's parser and surfaces in the UI as a bare network error.
   upload: (file) => {
     const form = new FormData();
     form.append('file', file);
-    return api.post('/api/profile-photo/me', form, { headers: { 'Content-Type': 'multipart/form-data' } });
+    return api.post('/api/profile-photo/me', form);
   },
   remove: () => api.delete('/api/profile-photo/me'),
 };
