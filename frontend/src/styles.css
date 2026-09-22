@@ -14,7 +14,7 @@
 body {
   background: var(--sand);
   color: var(--ink);
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
   margin: 0;
   line-height: 1.55;
 }
@@ -116,7 +116,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 }
 
 /* ---------- Checklist ---------- */
-.masar-check-group h3 { font-size: 15px; margin: 0 0 10px; opacity: 0.85; font-family: 'Work Sans', sans-serif; font-weight: 600; }
+.masar-check-group h3 { font-size: 15px; margin: 0 0 10px; opacity: 0.85; font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif; font-weight: 600; }
 .masar-check-item {
   display: flex;
   align-items: flex-start;
@@ -292,7 +292,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   border-radius: 12px;
   padding: 14px 10px;
   cursor: pointer;
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
   font-size: 14.5px;
   font-weight: 600;
   color: var(--ink);
@@ -312,7 +312,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   .masar-lang-grid { grid-template-columns: 1fr; }
 }
 
-/* ---------- Splash / first-run landing (photo hero, matches mockup) ---------- */
+/* ---------- Splash / first-run landing (indigo/orange gradient, matches the "Path" design concept exactly - no photo) ---------- */
 .m-splash {
   min-height: 100vh;
   width: 100%;
@@ -324,7 +324,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   box-sizing: border-box;
   padding: 18px 20px calc(28px + env(safe-area-inset-bottom, 0px));
   color: #fff;
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
 }
 
 .m-splash-top { display: flex; justify-content: flex-end; }
@@ -333,16 +333,15 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255,255,255,0.94);
-  color: var(--m-navy);
+  gap: 5px;
+  background: rgba(255,255,255,0.14);
+  color: #fff;
   border-radius: 999px;
-  padding: 8px 13px;
-  font-size: 12.5px;
+  padding: 6px 11px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.22);
   user-select: none;
 }
 
@@ -372,7 +371,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   color: var(--m-navy);
   cursor: pointer;
   text-align: left;
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
 }
 .m-splash-langopt:hover { background: var(--m-bg); }
 .m-splash-langopt.active { background: var(--m-green-bg); color: var(--m-teal); }
@@ -459,20 +458,46 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: var(--m-navy);
+  background: var(--m-teal);
   color: #fff;
   border: none;
   border-radius: 999px;
-  padding: 15px 30px;
-  font-size: 15.5px;
-  font-weight: 700;
-  font-family: 'Work Sans', sans-serif;
+  padding: 16px;
+  font-size: 14.5px;
+  font-weight: 800;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
   cursor: pointer;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 26px rgba(255,75,43,0.4);
   width: 100%;
-  max-width: 320px;
+  box-sizing: border-box;
+  margin-top: 26px;
 }
 .m-splash-cta:active { transform: translateY(1px); }
+
+/* Splash step's "Begin your path" - a solid pill pinned near the bottom,
+   separate from the centered logo/tagline block above it (matches
+   Onboard1Splash.dc.html exactly). */
+.m-splash-begin-btn {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  bottom: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--m-teal);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 16px;
+  font-weight: 800;
+  font-size: 14.5px;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(255,75,43,0.4);
+}
+.m-splash-begin-btn:active { transform: translateY(1px); }
 
 .m-splash-login { margin-top: 14px; font-size: 13px; opacity: 0.92; text-shadow: 0 2px 8px rgba(0,0,0,0.45); }
 .m-splash-login .linklike {
@@ -486,6 +511,79 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   font-size: inherit;
   font-family: inherit;
 }
+
+.m-splash-badge-lg{
+  width:72px; height:72px; border-radius:22px; background: var(--m-teal); color:#fff;
+  display:flex; align-items:center; justify-content:center; margin-bottom:20px;
+  box-shadow: 0 16px 38px rgba(255,75,43,0.4);
+}
+.m-splash-badge-sm{
+  width:48px; height:48px; border-radius:15px; background: var(--m-teal); color:#fff;
+  display:flex; align-items:center; justify-content:center; margin-bottom:12px;
+}
+
+/* ---------- Onboarding steps: Purpose / Origin / Destination ---------- */
+.m-onb-page{
+  background: var(--m-bg); min-height:100vh; box-sizing:border-box;
+  padding: 56px 24px calc(28px + env(safe-area-inset-bottom, 0px));
+  display:flex; flex-direction:column; font-family:'Plus Jakarta Sans','Noto Sans Arabic',sans-serif;
+  color: var(--m-navy); max-width:480px; margin:0 auto;
+}
+.m-onb-progress{ display:flex; gap:5px; margin-bottom:24px; }
+.m-onb-progress span{ flex:1; height:4px; border-radius:2px; background: var(--m-line); }
+.m-onb-progress span.done{ background: var(--m-teal); }
+.m-onb-title{ font-family:'Fraunces',serif; font-weight:900; font-size:26px; letter-spacing:-0.01em; margin:0; }
+.m-onb-sub{ font-size:12.5px; color: var(--m-navy-soft); margin:8px 0 0; line-height:1.5; }
+
+.m-onb-purpose-list{ display:flex; flex-direction:column; gap:12px; margin-top:24px; }
+.m-onb-purpose-card{
+  display:flex; align-items:flex-start; gap:13px; text-align:left; border-radius:20px; padding:17px;
+  border:1.5px solid var(--m-line); background: var(--m-surface); cursor:pointer; font-family:inherit;
+  box-shadow: var(--m-shadow);
+}
+.m-onb-purpose-card.selected{ background: var(--m-navy); color:#fff; border-color:var(--m-navy); }
+.m-onb-purpose-icon{
+  width:42px; height:42px; border-radius:13px; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; font-size:19px; background: var(--m-teal-pale); color: var(--m-teal-deep);
+}
+.m-onb-purpose-card.selected .m-onb-purpose-icon{ background: var(--m-teal); color:#fff; }
+.m-onb-purpose-title{ display:block; font-family:'Fraunces',serif; font-size:15px; font-weight:800; }
+.m-onb-purpose-desc{ display:block; font-size:11.5px; margin-top:2px; line-height:1.4; color: var(--m-navy-soft); }
+.m-onb-purpose-card.selected .m-onb-purpose-desc{ color: rgba(255,255,255,0.65); }
+.m-onb-purpose-check{
+  width:20px; height:20px; border-radius:50%; border:2px solid var(--m-line); flex-shrink:0; margin-top:2px;
+  display:flex; align-items:center; justify-content:center; color:#fff;
+}
+.m-onb-purpose-card.selected .m-onb-purpose-check{ background: var(--m-teal); border-color: var(--m-teal); }
+
+.m-onb-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:26px; }
+.m-onb-tile{
+  display:flex; flex-direction:column; align-items:center; gap:10px; border-radius:20px; padding:20px 10px;
+  border:1.5px solid var(--m-line); background: var(--m-surface); cursor:pointer; font-family:inherit;
+  box-shadow: var(--m-shadow); color: var(--m-navy);
+}
+.m-onb-tile.selected{ background: var(--m-navy); color:#fff; border-color: var(--m-navy); }
+.m-onb-tile-other{ border-style:dashed; box-shadow:none; }
+.m-onb-tile .circle{ width:48px; height:48px; border-radius:15px; display:flex; align-items:center; justify-content:center; }
+
+.m-onb-list{ display:flex; flex-direction:column; gap:12px; margin-top:26px; }
+.m-onb-row{
+  display:flex; align-items:center; gap:14px; border-radius:20px; padding:15px 17px;
+  border:1.5px solid var(--m-line); background: var(--m-surface); cursor:pointer; font-family:inherit;
+  text-align:left; width:100%; box-sizing:border-box; box-shadow: var(--m-shadow); color: var(--m-navy);
+}
+.m-onb-row.selected{ background: var(--m-navy); color:#fff; border-color: var(--m-navy); }
+.m-onb-row .circle{ width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.m-onb-row-title{ display:block; font-family:'Fraunces',serif; font-size:15px; font-weight:800; }
+.m-onb-row-sub{ display:block; font-size:11px; margin-top:1px; }
+
+.m-onb-footer{ margin-top:auto; padding-top:24px; display:flex; flex-direction:column; gap:10px; align-items:center; }
+.m-onb-continue{
+  width:100%; box-sizing:border-box; display:flex; align-items:center; justify-content:center; gap:8px;
+  background: var(--m-teal); color:#fff; border:none; border-radius:999px; padding:16px;
+  font-weight:800; font-size:14.5px; box-shadow: 0 10px 24px rgba(255,75,43,0.32); cursor:pointer; font-family:inherit;
+}
+.m-onb-skip{ background:none; border:none; font-size:12.5px; color: var(--m-navy-soft); font-weight:700; cursor:pointer; font-family:inherit; }
 
 /* ---------- Language switch button (sidebar) ---------- */
 .masar-lang-switch {
@@ -557,19 +655,26 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 }
 
 /* ============================================================
-   MASAR v2 — light, premium mobile design system
-   (overrides the older dark-sidebar look; brief-driven palette)
+   MASAR v3 — "Path" visual system
+   One signature saturated color (an app can own, the way Meetup owns
+   Cinnabar red or Tinder owns flame) instead of a soft multi-color
+   palette, on a warm ink/paper base instead of cool navy/gray.
+   --m-teal / --m-navy / --m-bg keep their old names for backward
+   compatibility (every component still references them) but now hold
+   the new Path-orange / ink / paper values.
    ============================================================ */
 :root {
-  --m-bg: #F6F8FA;
+  --m-bg: #FBF3E9;
   --m-surface: #FFFFFF;
-  --m-navy: #16324A;
-  --m-navy-soft: #4C6379;
-  --m-teal: #0F7A72;
-  --m-teal-deep: #0B5C56;
-  --m-teal-pale: #E3F3F1;
-  --m-line: rgba(22,50,74,0.09);
-  --m-shadow: 0 8px 24px rgba(22,50,74,0.08);
+  --m-navy: #17130F;
+  --m-navy-soft: #7A6C5D;
+  --m-teal: #FF4B2B;
+  --m-teal-deep: #C23112;
+  --m-teal-pale: #FFE7DE;
+  --m-line: rgba(23,19,15,0.09);
+  --m-shadow: 0 10px 26px rgba(23,19,15,0.10);
+
+  --m-dusk: #2B2250;   --m-dusk-deep: #17112E;
 
   --m-blue: #2E6FE0;   --m-blue-bg: #E8EFFD;
   --m-green: #1FA971;  --m-green-bg: #E5F7EE;
@@ -578,7 +683,16 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   --m-pink: #E5527A;   --m-pink-bg: #FCE9EE;
 }
 
-.m-shell { background: var(--m-bg); min-height: 100vh; color: var(--m-navy); font-family:'Work Sans', sans-serif; }
+.m-em { font-style: italic; color: var(--m-teal); }
+
+.m-brand-badge {
+  width: 34px; height: 34px; border-radius: 11px;
+  background: var(--m-teal); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.m-shell { background: var(--m-bg); min-height: 100vh; color: var(--m-navy); font-family:'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif; }
 .m-header {
   display:flex; align-items:center; justify-content:space-between;
   padding: 18px 20px 6px;
@@ -586,7 +700,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 .m-brand { display:flex; align-items:center; gap:8px; }
 .m-brand-mark { color: var(--m-navy); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .m-brand-word {
-  font-family:'Fraunces', serif; font-weight:700; font-size:17px; letter-spacing:0.05em;
+  font-family:'Fraunces', serif; font-weight:900; font-size:18px; letter-spacing:-0.02em;
   color: var(--m-navy); line-height:1.1;
 }
 .m-brand-ar { font-size:10.5px; color: var(--m-navy-soft); line-height:1.1; }
@@ -639,23 +753,23 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   color: var(--m-navy);
   cursor: pointer;
   text-align: left;
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
 }
 .m-header-langopt:hover { background: var(--m-bg); }
 .m-header-langopt.active { background: var(--m-green-bg); color: var(--m-teal); }
 
 .m-page { padding: 6px 20px 100px; max-width: 480px; margin: 0 auto; }
-.m-greeting-name { font-family:'Fraunces', serif; font-weight:700; font-size:23px; margin: 4px 0 2px; }
-.m-greeting-sub { color: var(--m-navy-soft); font-size:14px; margin-bottom:18px; }
+.m-greeting-name { font-size:14px; font-weight:600; color: var(--m-navy-soft); margin: 4px 0 3px; }
+.m-greeting-sub { font-family:'Fraunces', serif; font-weight:900; font-size:26px; line-height:1.15; letter-spacing:-0.01em; margin-bottom:18px; color: var(--m-navy); }
 
 .m-hero {
   border-radius:22px; padding:24px 22px 26px; margin-bottom:18px;
-  background: linear-gradient(195deg, #2E7D74 0%, var(--m-teal-deep) 55%, #082826 100%);
+  background: linear-gradient(150deg, var(--m-dusk) 0%, var(--m-dusk-deep) 55%, #0B0818 100%);
   color:#fff; position:relative; overflow:hidden; min-height: 176px;
 }
 .m-hero::after{
-  content:""; position:absolute; left:50%; top:-70px; width:220px; height:220px; transform:translateX(-15%);
-  border-radius:50%; background: radial-gradient(circle, rgba(255,200,110,0.35), transparent 70%);
+  content:""; position:absolute; right:-40px; top:-60px; width:220px; height:220px;
+  border-radius:50%; background: radial-gradient(circle, rgba(255,75,43,0.5), transparent 70%);
 }
 .m-hero-badge{
   position:relative; display:inline-flex; align-items:center; background:rgba(255,255,255,0.18);
@@ -683,6 +797,20 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 .m-flag-chip .label{ font-size:10.5px; color: var(--m-navy-soft); }
 .m-flag-arrow{ color: var(--m-navy-soft); font-size:14px; margin: 0 2px 16px; }
 
+.m-community-teaser{
+  display:flex; align-items:center; gap:12px; background: var(--m-navy); color:#fff;
+  border-radius:18px; padding:14px 15px; margin-bottom:18px; text-decoration:none; box-shadow: var(--m-shadow);
+}
+.m-community-teaser .avatars{ display:flex; flex-shrink:0; }
+.m-community-teaser .avatars span{
+  width:27px; height:27px; border-radius:50%; color:#fff; font-size:10px; font-weight:800;
+  display:flex; align-items:center; justify-content:center; border:2px solid var(--m-navy); margin-left:-9px;
+}
+.m-community-teaser .avatars span:first-child{ margin-left:0; }
+.m-community-teaser .text{ flex:1; min-width:0; }
+.m-community-teaser .text strong{ display:block; font-size:12.5px; font-weight:800; }
+.m-community-teaser .text span{ display:block; font-size:10.5px; opacity:0.65; margin-top:1px; }
+
 .m-feature-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
 .m-feature-card{
   background: var(--m-surface); border-radius:16px; padding:15px 16px; box-shadow: var(--m-shadow);
@@ -695,23 +823,23 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   margin-bottom:10px;
 }
 .m-feature-row{ display:flex; align-items:center; gap:4px; }
-.m-feature-card h3{ font-size:14.5px; margin:0; font-weight:600; font-family:'Work Sans',sans-serif; }
+.m-feature-card h3{ font-size:14.5px; margin:0; font-weight:600; font-family:'Plus Jakarta Sans','Noto Sans Arabic',sans-serif; }
 .m-feature-row .chev{ color: var(--m-navy-soft); flex-shrink:0; margin-top:1px; }
 .m-feature-card p{ font-size:11.5px; color: var(--m-navy-soft); margin:3px 0 0; line-height:1.4; }
 
 .m-checklist-card{
-  display:flex; align-items:center; gap:14px; background: var(--m-teal-pale);
-  border-radius:18px; padding:17px 18px; margin-bottom:22px; text-decoration:none; color: inherit;
-  position:relative; overflow:hidden;
+  display:flex; align-items:center; gap:14px; background: var(--m-teal); color:#fff;
+  border-radius:20px; padding:17px 18px; margin-bottom:22px; text-decoration:none;
+  position:relative; overflow:hidden; box-shadow: 0 10px 22px rgba(255,75,43,0.32);
 }
 .m-checklist-icon{
-  width:42px; height:42px; border-radius:50%; background: var(--m-teal); color:#fff;
+  width:42px; height:42px; border-radius:13px; background: rgba(255,255,255,0.22); color:#fff;
   display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative; z-index:1;
 }
-.m-checklist-card h3{ font-size:14.5px; margin:0 0 2px; font-family:'Work Sans',sans-serif; font-weight:600; position:relative; z-index:1; }
-.m-checklist-card p{ font-size:12px; color: var(--m-navy-soft); margin:0; position:relative; z-index:1; }
-.m-checklist-chev{ margin-left:auto; flex-shrink:0; color: var(--m-teal-deep); position:relative; z-index:1; }
-.m-checklist-art{ position:absolute; right:-6px; bottom:-6px; width:150px; height:auto; opacity:0.55; color: var(--m-teal); }
+.m-checklist-card h3{ font-family:'Fraunces', serif; font-size:15px; margin:0 0 2px; font-weight:800; position:relative; z-index:1; color:#fff; }
+.m-checklist-card p{ font-size:12px; color:#fff; opacity:0.85; margin:0; position:relative; z-index:1; }
+.m-checklist-chev{ margin-left:auto; flex-shrink:0; color:#fff; position:relative; z-index:1; }
+.m-checklist-art{ position:absolute; right:-6px; bottom:-6px; width:150px; height:auto; opacity:0.28; color:#fff; }
 
 .m-section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
 .m-section-title{ font-family:'Fraunces', serif; font-weight:600; font-size:17px; margin: 0 0 3px; }
@@ -810,7 +938,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 .m-res-cat-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
 .m-res-cat-card{
   display:flex; align-items:center; gap:10px; background: var(--m-surface); border:1px solid transparent;
-  border-radius:14px; padding:13px 14px; box-shadow: var(--m-shadow); cursor:pointer; font-family:'Work Sans', sans-serif;
+  border-radius:14px; padding:13px 14px; box-shadow: var(--m-shadow); cursor:pointer; font-family:'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
   text-align:left;
 }
 .m-res-cat-card.active{ border-color: var(--m-teal); }
@@ -827,7 +955,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   border-radius:14px; padding:11px 14px; box-shadow: var(--m-shadow); color: var(--m-navy-soft);
 }
 .m-uni-search input{
-  border:none; outline:none; background:none; flex:1; font-size:14px; color: var(--m-navy); font-family:'Work Sans', sans-serif;
+  border:none; outline:none; background:none; flex:1; font-size:14px; color: var(--m-navy); font-family:'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
 }
 .m-uni-card{
   display:flex; align-items:flex-end; text-decoration:none; color:#fff; border-radius:16px; overflow:hidden;
@@ -869,7 +997,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 .m-uni-tabs{ display:flex; gap:6px; overflow-x:auto; margin-bottom:16px; }
 .m-uni-tab{
   flex:0 0 auto; background: var(--m-surface); border:1px solid var(--m-line); color: var(--m-navy-soft);
-  border-radius:999px; padding:8px 15px; font-size:12.5px; font-weight:600; cursor:pointer; font-family:'Work Sans', sans-serif;
+  border-radius:999px; padding:8px 15px; font-size:12.5px; font-weight:600; cursor:pointer; font-family:'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
 }
 .m-uni-tab.active{ background: var(--m-teal); border-color: var(--m-teal); color:#fff; }
 .m-uni-tabpanel{ margin-bottom: 20px; }
@@ -901,7 +1029,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 }
 .m-uni-accordion-head{
   width:100%; display:flex; align-items:center; gap:12px; background:none; border:none; cursor:pointer;
-  padding:15px 16px; font-family:'Work Sans', sans-serif; text-align:left;
+  padding:15px 16px; font-family:'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif; text-align:left;
 }
 .m-uni-accordion-flag{ display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:20px; }
 .m-uni-accordion-label{ flex:1; display:flex; flex-direction:column; gap:2px; }
@@ -932,7 +1060,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 }
 .m-uni-filter-clear{
   background:none; border:none; color: var(--m-teal-deep); font-size:12.5px; font-weight:600; cursor:pointer;
-  font-family:'Work Sans', sans-serif; padding:0;
+  font-family:'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif; padding:0;
 }
 .m-uni-filter-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px 12px; }
 .m-uni-filter{ display:flex; flex-direction:column; gap:5px; }
@@ -943,7 +1071,7 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 }
 .m-uni-select-wrap select{
   flex:1; appearance:none; -webkit-appearance:none; border:none; background:none; outline:none;
-  padding:9px 4px; font-size:12.5px; color: var(--m-navy); font-family:'Work Sans', sans-serif;
+  padding:9px 4px; font-size:12.5px; color: var(--m-navy); font-family:'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
 }
 .m-uni-select-wrap svg{ color: var(--m-navy-soft); flex-shrink:0; pointer-events:none; }
 
@@ -1018,6 +1146,44 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 .m-chat-message .body{ font-size:14px; line-height:1.4; color: var(--m-navy); white-space: pre-wrap; word-break: break-word; }
 .m-chat-composer{ display:flex; gap:8px; margin-top:10px; position: sticky; bottom: 8px; }
 .m-chat-composer input{ flex:1; }
+/* "Own message" bubble (ActivityChat.jsx) - the sender's own messages align
+   right and pick up the app's teal accent instead of the neutral surface
+   color, the way most chat apps distinguish "you" from everyone else. */
+.m-chat-message.own{ align-self: flex-end; background: var(--m-teal); }
+.m-chat-message.own .body{ color: #fff; }
+
+/* Activity chat room (ActivityChat.jsx) - reached by tapping an activity
+   anywhere in the app, or automatically right after creating one. */
+.m-chatroom-back{ display:inline-block; font-size:13px; color: var(--m-navy-soft); text-decoration:none; margin-top:2px; }
+.m-chatroom-header{
+  background: var(--m-surface); border-radius:18px; box-shadow: var(--m-shadow); padding:16px 18px; margin-top:12px;
+}
+.m-chatroom-cat{
+  display:inline-block; border-radius:999px; padding:3px 10px; font-size:10.5px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.02em; margin-bottom:8px;
+}
+.m-chatroom-title{ font-family:'Fraunces', serif; font-weight:700; font-size:20px; color: var(--m-navy); margin:0 0 6px; }
+.m-chatroom-desc{ font-size:13.5px; color: var(--m-navy-soft); line-height:1.5; margin:0 0 10px; }
+.m-chatroom-meta{ font-size:12.5px; color: var(--m-navy-soft); margin-bottom:10px; }
+.m-chatroom-meta-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.m-chatroom-going{
+  display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; color: var(--m-teal-deep);
+  background: var(--m-teal-pale); border-radius:999px; padding:3px 10px;
+}
+.m-chatroom-host{ font-size:12.5px; color: var(--m-navy-soft); padding-top:10px; border-top:1px solid var(--m-line); }
+.m-chatroom-host strong{ color: var(--m-navy); }
+.m-chatroom-you{ margin-inline-start:4px; font-size:11px; color: var(--m-teal-deep); font-weight:700; }
+.m-chatroom-requests{ margin:10px 0 0; background: var(--m-surface); border-radius:14px; padding:12px 14px; box-shadow: var(--m-shadow); }
+.m-chatroom-gate{
+  margin-top:16px; background: var(--m-surface); border-radius:18px; padding:26px 20px; text-align:center; box-shadow: var(--m-shadow);
+}
+.m-chatroom-gate-title{ font-family:'Fraunces', serif; font-weight:700; font-size:16.5px; color: var(--m-navy); margin:0 0 6px; }
+.m-chatroom-gate-body{ font-size:13px; color: var(--m-navy-soft); line-height:1.55; margin:0 auto 16px; max-width:34ch; }
+.m-chatroom-chat{
+  margin-top:16px; background: var(--m-surface); border-radius:18px; padding:14px 14px 12px; box-shadow: var(--m-shadow);
+  display:flex; flex-direction:column;
+}
+.m-chatroom-empty{ text-align:center; opacity:0.55; font-size:13px; margin:22px 0; }
 
 /* Cohort room: activities */
 .m-activity-form{ background: var(--m-surface); border-radius:14px; padding:14px; box-shadow: var(--m-shadow); margin-bottom:16px; }
@@ -1109,6 +1275,29 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 }
 .m-map-badge-round:disabled{ cursor:default; opacity:0.55; }
 .m-map-error{ font-size:11.5px; color: var(--m-pink); margin-top:6px; }
+
+/* "+ Add activity" floating action button - fixed to the viewport bottom
+   (clearing the bottom nav) rather than squeezed inline above the filter
+   chips like before. The right offset uses a CSS max() trick so it hugs
+   the app's centered 480px column on wide/desktop screens instead of
+   drifting to the physical edge of the browser window, while still sitting
+   a normal 16px from the edge on phone-width screens. Mirrors the
+   bottom-right button placement from the Nomadtable reference screenshots. */
+.m-fab{
+  position:fixed; z-index:520; bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+  inset-inline-end: max(16px, calc((100vw - 480px) / 2 + 16px));
+  display:flex; align-items:center; gap:7px; border:none; border-radius:999px;
+  padding:13px 18px 13px 15px; background: var(--m-teal); color:#fff; font-weight:700; font-size:13.5px;
+  box-shadow: 0 6px 18px rgba(11,92,86,0.38); cursor:pointer; transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.m-fab:active{ transform: scale(0.96); }
+.m-fab-icon{ display:flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background: rgba(255,255,255,0.22); flex-shrink:0; }
+
+/* Small shared helpers for page-level status text (error/loading/empty),
+   replacing one-off inline styles so these read consistently everywhere. */
+.m-page-error{ font-size:12.5px; color: var(--m-pink); margin-top:8px; }
+.m-page-loading{ opacity:0.6; font-size:14px; margin-top:12px; }
+.m-page-empty{ margin-top:16px; font-size:13px; opacity:0.7; text-align:center; }
 
 /* Explore activity cards: badges, status line, action row, host request panel */
 .m-activity-badges{ display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap; }
