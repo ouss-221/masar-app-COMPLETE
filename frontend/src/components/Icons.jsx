@@ -128,15 +128,26 @@ export function IconChevronDown({ size = 12, ...rest }) {
   );
 }
 
-// The little mountain-and-sun mark used on the splash screen (and anywhere
-// else a compact brand mark is useful) - a simplified version of the road
-// winding up toward a sunrise that the MASAR wordmark implies.
+// The mountain-and-sun brand mark (splash badges, the header badge, and
+// anywhere else a compact mark is useful). Redrawn with smooth, rounded
+// peaks - matching a reference mark the user picked out - instead of the
+// original sharp triangular silhouette. Same single-color treatment as
+// everywhere else in the app: rendered in `currentColor`, so it's always
+// whatever color the badge around it sets (white on the signature-orange
+// badges used throughout).
 export function IconMasarMark({ size = 40, ...rest }) {
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" {...rest}>
-      <circle cx="34" cy="12" r="5" fill="currentColor" opacity="0.92" />
-      <path d="M3 35 16 17l6 8 4-5.5L45 35Z" fill="currentColor" opacity="0.95" />
-      <path d="M3 35.5c6-2 10-1 14 2s10 3 16-1" stroke="#fff" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.75" />
+      <circle cx="35" cy="11" r="5" fill="currentColor" />
+      <path
+        d="M4 36
+           C4 36 9 18 16 14
+           C19 16 22 20 24 25
+           C26 20 29 16.5 33 17
+           C38 17.5 43 30 44 36
+           Z"
+        fill="currentColor"
+      />
     </svg>
   );
 }
@@ -306,6 +317,14 @@ export function IconNavigation({ size = 18, ...rest }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" {...base} {...rest}>
       <path d="M12 3 20 20l-8-4.5L4 20Z" />
+    </svg>
+  );
+}
+
+export function IconPlus({ size = 18, ...rest }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} {...rest}>
+      <path d="M12 5v14M5 12h14" />
     </svg>
   );
 }
