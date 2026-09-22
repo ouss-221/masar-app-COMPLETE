@@ -205,7 +205,7 @@ export default function ActivityChat() {
       <Link to="/map" className="m-chatroom-back">← {t.back}</Link>
 
       <div className="m-chatroom-header">
-        <span className="m-chatroom-cat" style={{ background: `${cat.color}1f`, color: cat.color }}>
+        <span className="m-chatroom-cat" style={{ background: cat.color, color: '#fff' }}>
           {cat.emoji} {cat.label[lang] || cat.label.en}
         </span>
         <h1 className="m-chatroom-title">{activity.title}</h1>
@@ -296,8 +296,8 @@ export default function ActivityChat() {
             <div ref={chatEndRef} />
           </div>
           <form onSubmit={sendMessage} className="m-chat-composer">
-            <input className="form-control" value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={t.typePlaceholder} maxLength={1000} />
-            <button type="submit" className="btn btn-dark btn-sm" disabled={!draft.trim()}>{t.send}</button>
+            <input className="m-chat-input" value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={t.typePlaceholder} maxLength={1000} aria-label={t.typePlaceholder} />
+            <button type="submit" className="m-chat-send" disabled={!draft.trim()}>{t.send}</button>
           </form>
         </div>
       )}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LANGUAGES } from '../i18n/translations.js';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
-import { IconMasarMark, IconGlobe, IconChevronDown, IconUsers } from '../components/Icons.jsx';
+import { IconMasarMark, IconGlobe, IconChevronDown, IconUsers, IconBell } from '../components/Icons.jsx';
 
 export default function Header() {
   const { lang, setLang } = useLanguage();
@@ -36,10 +36,12 @@ export default function Header() {
             </div>
           )}
         </div>
-        <Link to="/people" className="m-icon-btn" aria-label="Find students">
+        <Link to="/community" className="m-icon-btn" aria-label="Find students">
           <IconUsers size={19} />
         </Link>
-        <Link to="/profile" className="m-icon-btn" aria-label="Notifications">🔔</Link>
+        <Link to="/profile" className="m-icon-btn" aria-label="Notifications">
+          <IconBell size={18} />
+        </Link>
       </div>
     </div>
   );

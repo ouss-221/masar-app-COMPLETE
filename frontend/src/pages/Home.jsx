@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { sections as sectionsApi, checklist as checklistApi } from '../api/client.js';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
-import { useDestination, COUNTRIES } from '../i18n/DestinationContext.jsx';
+import { useDestination, COUNTRIES, destPhotoBackground } from '../i18n/DestinationContext.jsx';
 import { pickSectionTitle } from '../i18n/pick.js';
 import { FEATURE_ICON_MAP, IconCheck, IconChevronRight, IconArrowRight } from '../components/Icons.jsx';
 
@@ -37,16 +37,6 @@ const FEATURE_DESC = {
   money: 'Open an account, manage your money',
   transport: 'Get around easily',
   life: 'Life, culture, health and more',
-};
-
-// Solid per-destination gradients - matches the "Path" design concept's
-// bold-color card treatment (Home hero + destination cards use these
-// instead of photos, so the app's signature color system is what students
-// actually see, not stock photography).
-const DEST_GRADIENT = {
-  es: 'linear-gradient(165deg,#FF6A45,var(--m-teal-deep))',
-  fr: 'linear-gradient(165deg,#5A4AA8,var(--m-dusk))',
-  it: 'linear-gradient(165deg,#E8A33D,#8A5A12)',
 };
 
 export default function Home() {
@@ -142,7 +132,7 @@ export default function Home() {
             set once during onboarding (or changed later from Profile), so
             tapping here doesn't silently switch it. */}
         {COUNTRIES.map((c) => (
-          <div key={c.code} className="m-dest-card" style={{ background: DEST_GRADIENT[c.code] || DEST_GRADIENT.es }}>
+          <div key={c.code} className="m-dest-card" style={destPhotoBackground(c.code, { w: 400, q: 80 })}>
             <span className="go"><IconArrowRight size={13} /></span>
             <span className="pill"><span className="flag">{c.flag}</span>{c.label}</span>
           </div>

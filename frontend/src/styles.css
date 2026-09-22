@@ -674,7 +674,8 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
   --m-line: rgba(23,19,15,0.09);
   --m-shadow: 0 10px 26px rgba(23,19,15,0.10);
 
-  --m-dusk: #2B2250;   --m-dusk-deep: #17112E;
+  --m-dusk: #2B2250;   --m-dusk-deep: #17112E;  --m-dusk-pale: #EAE6F7;
+  --m-gold: #E8A33D;   --m-gold-pale: #FCEFD9;
 
   --m-blue: #2E6FE0;   --m-blue-bg: #E8EFFD;
   --m-green: #1FA971;  --m-green-bg: #E5F7EE;
@@ -1186,15 +1187,119 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 }
 .m-community-join-panel{ background: var(--m-bg); border-radius:12px; padding:12px 14px; margin: 4px 4px 12px; }
 
+/* Community v2 - matches the approved "Path" design concept exactly.
+   Merges what used to be two separate pages (NearbyStudents.jsx's People
+   tab, and this page's own old per-country/city accordion) into one
+   tabbed screen: Nearby / University / Groups. */
+.m-comm-tabs{ display:flex; gap:8px; overflow-x:auto; margin-top:14px; }
+.m-comm-tabs::-webkit-scrollbar{ display:none; }
+.m-comm-tab{
+  flex-shrink:0; background: var(--m-surface); border:1.5px solid var(--m-line); color: var(--m-navy);
+  border-radius:999px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;
+}
+.m-comm-tab.active{ background: var(--m-navy); color:#fff; border-color: var(--m-navy); font-weight:800; }
+
+.m-comm-card{ background: var(--m-surface); border-radius:20px; padding:15px 16px; box-shadow: var(--m-shadow); margin-top:16px; }
+.m-comm-card-head{ display:flex; align-items:center; justify-content:space-between; }
+.m-comm-card-head .t{ font-family:'Fraunces', serif; font-size:14px; font-weight:800; color: var(--m-navy); }
+.m-comm-card-head .see-all{ background:none; border:none; padding:0; font-size:11px; color: var(--m-teal); font-weight:800; cursor:pointer; font-family:inherit; }
+
+.m-comm-list{ display:flex; flex-direction:column; gap:11px; margin-top:11px; }
+.m-comm-row{ display:flex; align-items:center; gap:10px; }
+.m-comm-row .info{ flex:1; min-width:0; }
+.m-comm-row .name{ display:block; font-size:12.5px; font-weight:800; color: var(--m-navy); }
+.m-comm-row .meta{ display:block; font-size:10.5px; color: var(--m-navy-soft); margin-top:1px; }
+.m-comm-row .status{ text-align:right; flex-shrink:0; }
+.m-comm-row .status .dist{ display:block; font-size:10px; color: var(--m-navy-soft); }
+.m-comm-row .status .state{ display:inline-flex; align-items:center; gap:3px; font-size:9.5px; font-weight:800; margin-top:1px; }
+.m-comm-row .status .state.online{ color:#1FA971; }
+.m-comm-row .status .state.away{ color: var(--m-navy-soft); }
+.m-comm-row .status .dot{ width:6px; height:6px; border-radius:50%; }
+.m-comm-row .status .dot.online{ background:#1FA971; }
+.m-comm-row .status .dot.away{ background:#D8CFC2; }
+.m-comm-empty{ font-size:12.5px; color: var(--m-navy-soft); }
+
+.m-comm-toggle-row{ display:flex; align-items:center; gap:7px; margin-top:13px; padding-top:12px; border-top:1px solid var(--m-line); }
+.m-comm-toggle-row svg{ color: var(--m-teal); flex-shrink:0; }
+.m-comm-toggle-row .lbl{ font-size:10.5px; color: var(--m-navy-soft); flex:1; font-weight:600; }
+.m-comm-toggle{ width:32px; height:18px; border-radius:999px; position:relative; flex-shrink:0; border:none; cursor:pointer; padding:0; background: var(--m-line); }
+.m-comm-toggle.on{ background: var(--m-teal); }
+.m-comm-toggle .knob{ position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:#fff; transition: left 0.15s ease; }
+.m-comm-toggle.on .knob{ left:16px; }
+
+.m-comm-section-head{ margin-top:22px; }
+.m-comm-section-head h3{ font-size:16px; font-weight:800; color: var(--m-navy); margin:0; }
+.m-comm-section-head .hint{ font-size:11px; color: var(--m-navy-soft); margin-top:2px; }
+
+.m-dest-group-list{ display:flex; flex-direction:column; gap:10px; margin-top:12px; }
+.m-dest-group-card{
+  background: var(--m-surface); border-radius:18px; padding:14px 15px; box-shadow: var(--m-shadow);
+  display:flex; align-items:center; gap:12px; border:none; width:100%; text-align:left; cursor:pointer; font-family:inherit;
+  color: var(--m-navy);
+}
+.m-dest-group-card.featured{ background: var(--m-navy); color:#fff; }
+.m-dest-group-card .flag{ font-size:22px; flex-shrink:0; }
+.m-dest-group-card .info{ flex:1; min-width:0; }
+.m-dest-group-card .name{ display:block; font-family:'Fraunces', serif; font-size:14px; font-weight:800; }
+.m-dest-group-card .count{ display:block; font-size:10.5px; margin-top:1px; opacity:0.65; }
+.m-dest-group-card .join-btn{
+  background: var(--m-teal); color:#fff; border:none; border-radius:999px; padding:7px 15px; font-size:11.5px; font-weight:800; flex-shrink:0;
+}
+.m-dest-group-card .join-btn.open{ background: var(--m-surface); border:1.5px solid var(--m-navy); color: var(--m-navy); }
+.m-dest-group-card.featured .join-btn.open{ background: transparent; border-color:#fff; color:#fff; }
+
+/* Activities list (ActivitiesList.jsx) - matches the approved "Path"
+   design concept exactly: Nearby/This Week/All tabs (reuses .m-comm-tab
+   above), a flat card list reached via "Back to Map" from Explore.jsx. */
+.m-act-list{ display:flex; flex-direction:column; gap:12px; margin-top:16px; }
+.m-act-card{
+  background: var(--m-surface); border-radius:20px; padding:15px; box-shadow: var(--m-shadow); cursor:pointer;
+}
+.m-act-card.featured{ background: var(--m-navy); color:#fff; }
+.m-act-badges{ display:inline-flex; gap:6px; flex-wrap:wrap; }
+.m-act-cat{
+  display:inline-block; border-radius:999px; padding:3px 10px; font-size:10px; font-weight:800;
+  text-transform:uppercase; letter-spacing:0.02em;
+}
+.m-act-private{ background: var(--m-navy); color:#fff; }
+.m-act-card.featured .m-act-private{ background: rgba(255,255,255,0.16); }
+.m-act-title{ font-family:'Fraunces', serif; font-weight:800; font-size:15.5px; margin-top:8px; }
+.m-act-meta{ font-size:11.5px; margin-top:3px; color: var(--m-navy-soft); }
+.m-act-card.featured .m-act-meta{ color: rgba(255,255,255,0.6); }
+.m-act-row{ display:flex; align-items:center; justify-content:space-between; margin-top:11px; }
+.m-act-going{ font-size:11.5px; font-weight:700; color: var(--m-teal-deep); }
+.m-act-card.featured .m-act-going{ color:#FF9878; }
+.m-act-pill{
+  background: var(--m-teal); color:#fff; border:none; border-radius:999px; padding:6px 14px; font-size:11.5px; font-weight:800;
+}
+.m-act-pill.outline{ background: var(--m-surface); border:1.5px solid var(--m-navy); color: var(--m-navy); }
+.m-act-card.featured .m-act-pill.outline{ background: transparent; border-color:#fff; color:#fff; }
+.m-act-pill:disabled{ opacity:0.6; }
+
+.m-comm-banner{
+  background: var(--m-teal-pale); border-radius:18px; padding:14px 16px; display:flex; align-items:flex-start; gap:10px;
+  margin-top:16px; color: var(--m-teal-deep);
+}
+.m-comm-banner svg{ flex-shrink:0; margin-top:1px; }
+.m-comm-banner p{ font-size:11px; line-height:1.45; font-weight:600; margin:0; }
+
 /* Cohort room: chat */
 .m-chat-log{
   display:flex; flex-direction:column; gap:10px; max-height:52vh; overflow-y:auto; padding: 6px 2px 10px;
 }
-.m-chat-message{ background: var(--m-surface); border-radius:12px; padding:9px 12px; box-shadow: var(--m-shadow); max-width: 88%; }
-.m-chat-message .who{ display:flex; align-items:center; gap:6px; font-size:11px; font-weight:700; color: var(--m-teal-deep); margin-bottom:2px; }
-.m-chat-message .body{ font-size:14px; line-height:1.4; color: var(--m-navy); white-space: pre-wrap; word-break: break-word; }
+.m-chat-message{ background: var(--m-bg); border-radius:14px; padding:9px 12px; max-width: 82%; }
+.m-chat-message .who{ display:flex; align-items:center; gap:6px; font-size:10.5px; font-weight:800; color: var(--m-teal-deep); margin-bottom:2px; }
+.m-chat-message .body{ font-size:13px; line-height:1.4; color: var(--m-navy); white-space: pre-wrap; word-break: break-word; }
 .m-chat-composer{ display:flex; gap:8px; margin-top:10px; position: sticky; bottom: 8px; }
-.m-chat-composer input{ flex:1; }
+.m-chat-composer .m-chat-input{
+  flex:1; display:flex; align-items:center; background: var(--m-bg); border-radius:999px; padding:10px 14px;
+  border:none; outline:none; font-size:13px; font-family:inherit; color: var(--m-navy);
+}
+.m-chat-send{
+  background: var(--m-teal); color:#fff; border:none; border-radius:999px; padding:0 18px;
+  font-size:12.5px; font-weight:800; flex-shrink:0;
+}
+.m-chat-send:disabled{ opacity:0.5; }
 /* "Own message" bubble (ActivityChat.jsx) - the sender's own messages align
    right and pick up the app's teal accent instead of the neutral surface
    color, the way most chat apps distinguish "you" from everyone else. */
@@ -1202,26 +1307,29 @@ h1, h2, h3 { font-family: 'Fraunces', serif; }
 .m-chat-message.own .body{ color: #fff; }
 
 /* Activity chat room (ActivityChat.jsx) - reached by tapping an activity
-   anywhere in the app, or automatically right after creating one. */
+   anywhere in the app, or automatically right after creating one. Dark
+   "ink" header card matching the approved design concept - a solid-color
+   card, not the neutral white surface used elsewhere, so this screen reads
+   as a distinct "you're in a room" moment. */
 .m-chatroom-back{ display:inline-block; font-size:13px; color: var(--m-navy-soft); text-decoration:none; margin-top:2px; }
 .m-chatroom-header{
-  background: var(--m-surface); border-radius:18px; box-shadow: var(--m-shadow); padding:16px 18px; margin-top:12px;
+  background: var(--m-navy); color:#fff; border-radius:20px; box-shadow: var(--m-shadow); padding:16px 18px; margin-top:12px;
 }
 .m-chatroom-cat{
-  display:inline-block; border-radius:999px; padding:3px 10px; font-size:10.5px; font-weight:700;
-  text-transform:uppercase; letter-spacing:0.02em; margin-bottom:8px;
+  display:inline-block; border-radius:999px; padding:3px 10px; font-size:10.5px; font-weight:800;
+  text-transform:uppercase; letter-spacing:0.02em; margin-bottom:9px;
 }
-.m-chatroom-title{ font-family:'Fraunces', serif; font-weight:700; font-size:20px; color: var(--m-navy); margin:0 0 6px; }
-.m-chatroom-desc{ font-size:13.5px; color: var(--m-navy-soft); line-height:1.5; margin:0 0 10px; }
-.m-chatroom-meta{ font-size:12.5px; color: var(--m-navy-soft); margin-bottom:10px; }
-.m-chatroom-meta-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.m-chatroom-title{ font-family:'Fraunces', serif; font-weight:800; font-size:19px; color:#fff; margin:0 0 6px; }
+.m-chatroom-desc{ font-size:12.5px; color: rgba(255,255,255,0.65); line-height:1.5; margin:0 0 10px; }
+.m-chatroom-meta{ font-size:12px; color: rgba(255,255,255,0.6); margin-bottom:10px; }
+.m-chatroom-meta-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
 .m-chatroom-going{
-  display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; color: var(--m-teal-deep);
-  background: var(--m-teal-pale); border-radius:999px; padding:3px 10px;
+  display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:800; color:#fff;
+  background: var(--m-teal); border-radius:999px; padding:3px 10px;
 }
-.m-chatroom-host{ display:flex; align-items:center; gap:7px; font-size:12.5px; color: var(--m-navy-soft); padding-top:10px; border-top:1px solid var(--m-line); }
-.m-chatroom-host strong{ color: var(--m-navy); }
-.m-chatroom-you{ margin-inline-start:4px; font-size:11px; color: var(--m-teal-deep); font-weight:700; }
+.m-chatroom-host{ display:flex; align-items:center; gap:7px; font-size:12px; color: rgba(255,255,255,0.6); padding-top:10px; border-top:1px solid rgba(255,255,255,0.14); }
+.m-chatroom-host strong{ color:#fff; }
+.m-chatroom-you{ margin-inline-start:4px; font-size:11px; color: var(--m-teal-pale); font-weight:700; }
 .m-chatroom-requests{ margin:10px 0 0; background: var(--m-surface); border-radius:14px; padding:12px 14px; box-shadow: var(--m-shadow); }
 .m-chatroom-gate{
   margin-top:16px; background: var(--m-surface); border-radius:18px; padding:26px 20px; text-align:center; box-shadow: var(--m-shadow);

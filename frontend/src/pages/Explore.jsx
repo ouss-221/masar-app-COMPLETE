@@ -4,11 +4,11 @@ import { activities as activitiesApi, auth, location as locationApi } from '../a
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { useDestination } from '../i18n/DestinationContext.jsx';
 import { CITIES_BY_COUNTRY } from '../data/profileOptions.js';
-import { ACTIVITY_CATEGORIES, categoryFor } from '../data/activityCategories.js';
+import { ACTIVITY_CATEGORIES } from '../data/activityCategories.js';
 import { CITY_COORDINATES, COUNTRY_FALLBACK_CENTER, haversineKm, MAX_ACTIVITY_DISTANCE_KM } from '../data/cityCoordinates.js';
 import ExploreMap from '../components/ExploreMap.jsx';
 import ActivityMap from '../components/ActivityMap.jsx';
-import { IconMap, IconNavigation, IconPlus } from '../components/Icons.jsx';
+import { IconNavigation, IconPlus } from '../components/Icons.jsx';
 
 const TEXT = {
   fr: {
@@ -156,12 +156,6 @@ export default function Explore() {
   const [allActivities, setAllActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
-  const [view, setView] = useState('map');
-  const [myId, setMyId] = useState(null);
-  const [rsvpBusy, setRsvpBusy] = useState(null); // activity id currently mid-request, or null
-  const [rsvpError, setRsvpError] = useState('');
-  const [openRequestsFor, setOpenRequestsFor] = useState(null); // activity id whose request panel is open
-  const [requestsByActivity, setRequestsByActivity] = useState({});
 
   // "Locate me": a one-tap, client-side-only lookup via the browser's own
   // Geolocation API - never sent to or stored on the backend, and separate
@@ -172,11 +166,6 @@ export default function Explore() {
   const [locateError, setLocateError] = useState('');
 
   const [travelers, setTravelers] = useState(null); // null = unknown, number once fetched
-
-  useEffect(() => {
-    if (!loggedIn) return;
-    auth.me().then((res) => setMyId(res.data.id)).catch(() => {});
-  }, [loggedIn]);
 
   useEffect(() => {
     if (!loggedIn || !navigator.geolocation) return;
@@ -242,44 +231,6 @@ export default function Explore() {
 
   const filtered = filter === 'all' ? allActivities : allActivities.filter((a) => a.category === filter);
 
-  // ---- RSVP / join-request actions ----
-
-  const doRsvp = async (activity, going) => {
-    setRsvpBusy(activity.id);
-    setRsvpError('');
-    try {
-      await activitiesApi.rsvp(activity.id, going);
-      load();
-    } catch (err) {
-      setRsvpError(err.response?.data || t.ageGateGeneric);
-    } finally {
-      setRsvpBusy(null);
-    }
-  };
-
-  const toggleRequests = (activity) => {
-    if (openRequestsFor === activity.id) {
-      setOpenRequestsFor(null);
-      return;
-    }
-    setOpenRequestsFor(activity.id);
-    activitiesApi.joinRequests(activity.id).then((res) => {
-      setRequestsByActivity((s) => ({ ...s, [activity.id]: res.data }));
-    }).catch(() => {});
-  };
-
-  const decideRequest = async (activityId, requestId, approve) => {
-    try {
-      if (approve) await activitiesApi.approveJoinRequest(requestId);
-      else await activitiesApi.declineJoinRequest(requestId);
-      const res = await activitiesApi.joinRequests(activityId);
-      setRequestsByActivity((s) => ({ ...s, [activityId]: res.data }));
-      load();
-    } catch {
-      // leave the panel as-is - the user can retry
-    }
-  };
-
   // ---- "+ Add activity" wizard ----
 
   const [showWizard, setShowWizard] = useState(false);
@@ -323,7 +274,7 @@ export default function Explore() {
     setCreateError('');
     try {
       const scheduledAt = new Date(`${wizard.date}T${wizard.timeMode === 'specific' ? wizard.time : '13:00'}:00`).toISOString();
-      await activitiesApi.createOnMap(country, city, {
+      const res = await activitiesApi.createOnMap(country, city, {
         title: wizard.title.trim(),
         description: (wizard.description.trim() || (wizard.timeMode === 'flexible' ? '' : '')) || null,
         category: wizard.category,
@@ -338,7 +289,11 @@ export default function Explore() {
         locationPrecision: wizard.precision,
       });
       setShowWizard(false);
-      load();
+      // Straight into the new activity's own chat room, same as tapping any
+      // other activity - a real request: "when u create an activty it takes
+      // u to a chat room". No need to also refresh this page's list here,
+      // since we're navigating away from it.
+      navigate(`/activities/${res.data.id}/chat`);
     } catch (err) {
       // The backend usually replies with a plain-text reason (age gate,
       // too-far-from-the-city, invalid date...) which is just a string and
@@ -370,67 +325,6 @@ export default function Explore() {
   const isTomorrow = (d) => { const tm = new Date(); tm.setDate(tm.getDate() + 1); return d.toDateString() === tm.toDateString(); };
   const iso = (d) => d.toISOString().slice(0, 10);
 
-  const renderActionButton = (a) => {
-    const busy = rsvpBusy === a.id;
-    if (a.joinStatus === 'going') {
-      return <button type="button" className="btn btn-outline-dark btn-sm" disabled={busy} onClick={() => doRsvp(a, false)}>{t.leave}</button>;
-    }
-    if (a.joinStatus === 'pending') {
-      return <button type="button" className="btn btn-sm" disabled style={{ opacity: 0.7 }}>{t.pending}</button>;
-    }
-    return (
-      <button type="button" className="btn btn-dark btn-sm" disabled={busy} onClick={() => doRsvp(a, true)}>
-        {a.joinPolicy === 'private' ? t.requestJoin : t.join}
-      </button>
-    );
-  };
-
-  const renderCard = (a) => {
-    const cat = categoryFor(a.category);
-    const isHost = myId != null && a.hostId === myId;
-    return (
-      <div key={a.id} className="m-explore-card">
-        <div className="m-explore-card-cat">
-          {cat.emoji} {cat.label[lang] || cat.label.en}
-          {(a.joinPolicy === 'private' || a.minAge || a.maxAge) && (
-            <span className="m-activity-badges" style={{ marginLeft: 6 }}>
-              {a.joinPolicy === 'private' && <span className="m-badge-pill m-badge-private">🔒 {t.private}</span>}
-              {(a.minAge || a.maxAge) && <span className="m-badge-pill m-badge-age">{t.ageBadge(a.minAge, a.maxAge)}</span>}
-            </span>
-          )}
-        </div>
-        <div className="m-explore-card-name">{a.title}</div>
-        <div className="m-explore-card-addr">
-          {new Date(a.scheduledAt).toLocaleString()} {a.location ? `· ${a.location}` : ''} · {t.going(a.goingCount)}
-        </div>
-        {a.joinStatus === 'pending' && <div className="m-activity-status pending">{t.pending}</div>}
-        {a.joinStatus === 'going' && <div className="m-activity-status going">{t.youreGoing}</div>}
-        <div className="m-activity-actions">
-          {loggedIn && renderActionButton(a)}
-          {isHost && a.joinPolicy === 'private' && (
-            <button type="button" className="btn btn-outline-dark btn-sm" onClick={() => toggleRequests(a)}>
-              {openRequestsFor === a.id ? t.hide : t.reviewRequests}
-            </button>
-          )}
-        </div>
-        {isHost && openRequestsFor === a.id && (
-          <div className="m-request-panel">
-            {(requestsByActivity[a.id] || []).length === 0 && <p className="m-request-empty">{t.noRequests}</p>}
-            {(requestsByActivity[a.id] || []).map((r) => (
-              <div key={r.id} className="m-request-row">
-                <span className="m-request-name">{r.userName}</span>
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <button type="button" className="btn btn-dark btn-sm" onClick={() => decideRequest(a.id, r.id, true)}>{t.approve}</button>
-                  <button type="button" className="btn btn-outline-dark btn-sm" onClick={() => decideRequest(a.id, r.id, false)}>{t.decline}</button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
-
   return (
     <div className="m-page" style={{ paddingBottom: 8 }}>
       <div className="m-section-title" style={{ marginTop: 10 }}>{t.title}</div>
@@ -447,52 +341,45 @@ export default function Explore() {
         ))}
       </div>
 
-      {rsvpError && <p className="m-page-error">{rsvpError}</p>}
-
       {loading && <p className="m-page-loading">{t.loading}</p>}
 
       {!loading && (
         <>
-          {view === 'map' ? (
-            <div style={{ marginTop: 10, position: 'relative' }}>
-              <ExploreMap
-                activities={filtered}
-                country={country}
-                city={city}
-                height={380}
-                myPosition={myPosition}
-                t={t}
-              />
+          <div style={{ marginTop: 10, position: 'relative' }}>
+            <ExploreMap
+              activities={filtered}
+              country={country}
+              city={city}
+              height={380}
+              myPosition={myPosition}
+              onSelectActivity={(a) => navigate(`/activities/${a.id}/chat`)}
+              t={t}
+            />
 
-              {loggedIn && (travelers != null ? (
-                <button type="button" className="m-map-badge m-map-badge-pill" onClick={() => navigate('/people')}>
-                  🧭 {t.travelersHere(travelers)}
-                </button>
-              ) : (
-                <button type="button" className="m-map-badge m-map-badge-pill m-map-badge-cta" onClick={() => navigate('/people')}>
-                  {t.travelersCta}
-                </button>
-              ))}
-
-              <button
-                type="button"
-                className="m-map-badge m-map-badge-round"
-                onClick={locateMe}
-                disabled={locating}
-                title={t.locateMe}
-                aria-label={t.locateMe}
-              >
-                <IconNavigation size={17} />
+            {loggedIn && (travelers != null ? (
+              <button type="button" className="m-map-badge m-map-badge-pill" onClick={() => navigate('/people')}>
+                🧭 {t.travelersHere(travelers)}
               </button>
-              {locateError && (
-                <p className="m-map-error">{locateError}</p>
-              )}
-            </div>
-          ) : (
-            <div className="m-explore-list">
-              {filtered.map(renderCard)}
-            </div>
-          )}
+            ) : (
+              <button type="button" className="m-map-badge m-map-badge-pill m-map-badge-cta" onClick={() => navigate('/people')}>
+                {t.travelersCta}
+              </button>
+            ))}
+
+            <button
+              type="button"
+              className="m-map-badge m-map-badge-round"
+              onClick={locateMe}
+              disabled={locating}
+              title={t.locateMe}
+              aria-label={t.locateMe}
+            >
+              <IconNavigation size={17} />
+            </button>
+            {locateError && (
+              <p className="m-map-error">{locateError}</p>
+            )}
+          </div>
 
           {filtered.length === 0 && (
             <p className="m-page-empty">{t.empty}</p>
@@ -501,9 +388,9 @@ export default function Explore() {
           <button
             type="button"
             className="m-explore-view-toggle"
-            onClick={() => setView((v) => (v === 'map' ? 'list' : 'map'))}
+            onClick={() => navigate('/map/activities')}
           >
-            {view === 'map' ? t.list : <><IconMap size={15} /> {t.map}</>}
+            {t.list}
           </button>
         </>
       )}

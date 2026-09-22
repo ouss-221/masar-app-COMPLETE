@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import Home from './pages/Home.jsx';
@@ -19,8 +19,9 @@ import PersonalInfo from './pages/PersonalInfo.jsx';
 import Community from './pages/Community.jsx';
 import CohortRoom from './pages/CohortRoom.jsx';
 import Explore from './pages/Explore.jsx';
+import ActivitiesList from './pages/ActivitiesList.jsx';
+import ActivityChat from './pages/ActivityChat.jsx';
 import PlaceDetail from './pages/PlaceDetail.jsx';
-import NearbyStudents from './pages/NearbyStudents.jsx';
 import HelpSupport from './pages/HelpSupport.jsx';
 import AboutMasar from './pages/AboutMasar.jsx';
 import Terms from './pages/Terms.jsx';
@@ -50,9 +51,15 @@ export default function App() {
         <Route path="/universities/:slug" element={<UniversityDetail />} />
         <Route path="/checklist" element={<div className="m-page"><Checklist /></div>} />
         <Route path="/map" element={<Explore />} />
+        <Route path="/map/activities" element={<ActivitiesList />} />
         <Route path="/map/place/:placeId" element={<PlaceDetail />} />
-        <Route path="/people" element={<NearbyStudents />} />
-        {/* /community still exists for the Groups tab's "browse cohorts" flow and old links */}
+        <Route path="/activities/:activityId/chat" element={<ActivityChat />} />
+        {/* Community.jsx now merges what NearbyStudents.jsx (the old /people
+            page) used to do - a plain redirect keeps the header's people
+            icon and Explore.jsx's "Travelers Here" link working unchanged.
+            NearbyStudents.jsx itself is left in place, unused, rather than
+            deleted. */}
+        <Route path="/people" element={<Navigate to="/community" replace />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/:groupId" element={<CohortRoom />} />
         <Route path="/resources" element={<Resources />} />

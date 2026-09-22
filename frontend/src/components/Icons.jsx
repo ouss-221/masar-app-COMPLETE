@@ -128,6 +128,29 @@ export function IconChevronDown({ size = 12, ...rest }) {
   );
 }
 
+// Replaces the header's old literal "🔔" emoji - the app's own design
+// direction (the "Path" redesign) explicitly avoids emoji in the UI in
+// favor of this same inline-stroke-SVG treatment used everywhere else
+// (IconUsers, IconChevronDown, etc.), and a bare emoji glyph renders
+// inconsistently (and, at header-icon size, illegibly) across platforms.
+export function IconEye({ size = 16, ...rest }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} {...rest}>
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+export function IconBell({ size = 19, ...rest }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} {...rest}>
+      <path d="M6 9.5a6 6 0 0 1 12 0c0 4.2 1.3 5.8 2 6.5H4c.7-.7 2-2.3 2-6.5Z" />
+      <path d="M9.7 19.5a2.4 2.4 0 0 0 4.6 0" />
+    </svg>
+  );
+}
+
 // The mountain-and-sun brand mark (splash badges, the header badge, and
 // anywhere else a compact mark is useful). Redrawn with smooth, rounded
 // peaks - matching a reference mark the user picked out - instead of the
