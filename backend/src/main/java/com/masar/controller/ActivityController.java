@@ -2,10 +2,12 @@ package com.masar.controller;
 
 import com.masar.model.Activity;
 import com.masar.model.ActivityJoinRequest;
+import com.masar.model.ActivityMessage;
 import com.masar.model.ActivityRsvp;
 import com.masar.model.AppUser;
 import com.masar.model.CohortGroup;
 import com.masar.repository.ActivityJoinRequestRepository;
+import com.masar.repository.ActivityMessageRepository;
 import com.masar.repository.ActivityRepository;
 import com.masar.repository.ActivityRsvpRepository;
 import com.masar.repository.AppUserRepository;
@@ -38,19 +40,24 @@ public class ActivityController {
     // meetup spot is often just outside a city's official boundary.
     private static final double MAX_ACTIVITY_DISTANCE_KM = 80;
 
+    private static final int MAX_MESSAGE_LENGTH = 1000;
+
     private final ActivityRepository activities;
     private final ActivityRsvpRepository rsvps;
     private final ActivityJoinRequestRepository joinRequests;
+    private final ActivityMessageRepository chatMessages;
     private final CohortGroupRepository groups;
     private final CohortMembershipRepository memberships;
     private final AppUserRepository users;
 
     public ActivityController(ActivityRepository activities, ActivityRsvpRepository rsvps,
-                               ActivityJoinRequestRepository joinRequests, CohortGroupRepository groups,
-                               CohortMembershipRepository memberships, AppUserRepository users) {
+                               ActivityJoinRequestRepository joinRequests, ActivityMessageRepository chatMessages,
+                               CohortGroupRepository groups, CohortMembershipRepository memberships,
+                               AppUserRepository users) {
         this.activities = activities;
         this.rsvps = rsvps;
         this.joinRequests = joinRequests;
+        this.chatMessages = chatMessages;
         this.groups = groups;
         this.memberships = memberships;
         this.users = users;
@@ -58,9 +65,11 @@ public class ActivityController {
 
     // joinStatus: "going" | "pending" | null (never requested, or the caller
     // is anonymous - see forCity below, the only public endpoint here).
+    // hostId: lets the frontend show the host's profile photo/avatar next to
+    // hostName, same reason CityActivityView below carries it.
     public record ActivityView(Long id, String title, String description, String category, String location,
                                 Double lat, Double lng, String scheduledAt, Integer capacity,
-                                String hostName, long goingCount, boolean going,
+                                Long hostId, String hostName, long goingCount, boolean going,
                                 Integer minAge, Integer maxAge, String joinPolicy, String locationPrecision,
                                 String joinStatus) {}
 
@@ -98,6 +107,21 @@ public class ActivityController {
 
     public record JoinRequestView(Long id, Long userId, String userName, String requestedAt) {}
 
+    // Full detail for one activity, used by the activity's own chat-room page
+    // (tapping an activity anywhere in the app lands here). country/city
+    // (from the activity's group) let the page show "where this is" without
+    // a second round-trip; host tells the frontend whether to show host-only
+    // controls without comparing ids itself.
+    public record ActivityDetailView(Long id, Long groupId, String country, String city, Long hostId, String hostName,
+                                      String title, String description, String category, String location,
+                                      Double lat, Double lng, String scheduledAt, Integer capacity, long goingCount,
+                                      Integer minAge, Integer maxAge, String joinPolicy, String locationPrecision,
+                                      String joinStatus, boolean host) {}
+
+    public record ActivityMessageView(Long id, Long userId, String displayName, String content, String createdAt) {}
+
+    public record SendActivityMessageRequest(@NotBlank String content) {}
+
     @GetMapping("/group/{groupId}")
     public ResponseEntity<?> forGroup(@PathVariable Long groupId, Authentication auth) {
         AppUser me = currentUser(auth);
@@ -129,6 +153,20 @@ public class ActivityController {
                         joinStatusFor(a, me)))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(result);
+    }
+
+    // Full detail for one activity - the destination every "tap this
+    // activity" affordance in the app now lands on (the map's popup, an
+    // Explore list card, and straight after creating one from the wizard).
+    // Falls under the class-wide /api/activities/** authenticated() rule
+    // (see SecurityConfig) rather than being public like forCity above,
+    // since its main purpose is the chat room below and chatting always
+    // requires a login anyway.
+    @GetMapping("/{activityId}")
+    public ResponseEntity<?> getOne(@PathVariable Long activityId, Authentication auth) {
+        AppUser me = currentUser(auth);
+        Activity a = activities.findById(activityId).orElseThrow();
+        return ResponseEntity.ok(detailView(a, me));
     }
 
     @PostMapping("/group/{groupId}")
@@ -344,12 +382,67 @@ public class ActivityController {
         return ResponseEntity.ok(toView(a, me));
     }
 
+    // ---- Activity chat room (poll-based, same pattern as CommunityController's
+    // group chat - see ActivityMessage) ----
+    //
+    // Gated to the host plus whoever has an actual RSVP row ("going"), not
+    // just anyone who can see the activity on the public map. A pending
+    // join-request on a private activity does NOT unlock the chat - that's
+    // the whole point of "private": the host approves who gets in first.
+
+    @GetMapping("/{activityId}/messages")
+    public ResponseEntity<?> getMessages(@PathVariable Long activityId, @RequestParam(required = false) Long afterId, Authentication auth) {
+        AppUser me = currentUser(auth);
+        Activity a = activities.findById(activityId).orElseThrow();
+        if (!canAccessChat(a, me)) return ResponseEntity.status(403).body("Join this activity first.");
+
+        List<ActivityMessage> list = afterId == null
+                ? chatMessages.findByActivityOrderByCreatedAtAsc(a)
+                : chatMessages.findByActivityAndIdGreaterThanOrderByCreatedAtAsc(a, afterId);
+        List<ActivityMessageView> result = list.stream()
+                .map(msg -> new ActivityMessageView(msg.getId(), msg.getUser().getId(), msg.getUser().getDisplayName(),
+                        msg.getContent(), msg.getCreatedAt().toString()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/{activityId}/messages")
+    public ResponseEntity<?> postMessage(@PathVariable Long activityId, @RequestBody SendActivityMessageRequest req, Authentication auth) {
+        AppUser me = currentUser(auth);
+        Activity a = activities.findById(activityId).orElseThrow();
+        if (!canAccessChat(a, me)) return ResponseEntity.status(403).body("Join this activity first.");
+
+        String content = req.content() == null ? "" : req.content().trim();
+        if (content.isEmpty()) return ResponseEntity.badRequest().body("Message can't be empty.");
+        if (content.length() > MAX_MESSAGE_LENGTH) return ResponseEntity.badRequest().body("Message is too long.");
+
+        ActivityMessage msg = new ActivityMessage();
+        msg.setActivity(a);
+        msg.setUser(me);
+        msg.setContent(content);
+        chatMessages.save(msg);
+        return ResponseEntity.ok(new ActivityMessageView(msg.getId(), me.getId(), me.getDisplayName(), msg.getContent(), msg.getCreatedAt().toString()));
+    }
+
+    private boolean canAccessChat(Activity a, AppUser me) {
+        return a.getHost().getId().equals(me.getId()) || rsvps.findByActivityAndUser(a, me).isPresent();
+    }
+
+    private ActivityDetailView detailView(Activity a, AppUser me) {
+        boolean isHost = a.getHost().getId().equals(me.getId());
+        return new ActivityDetailView(a.getId(), a.getGroup().getId(), a.getGroup().getCountry(), a.getGroup().getCity(),
+                a.getHost().getId(), a.getHost().getDisplayName(), a.getTitle(), a.getDescription(), a.getCategory(),
+                a.getLocation(), a.getLat(), a.getLng(), a.getScheduledAt().toString(), a.getCapacity(),
+                rsvps.countByActivity(a), a.getMinAge(), a.getMaxAge(), a.getJoinPolicy(), a.getLocationPrecision(),
+                joinStatusFor(a, me), isHost);
+    }
+
     private ActivityView toView(Activity a, AppUser me) {
         long going = rsvps.countByActivity(a);
         String status = joinStatusFor(a, me);
         return new ActivityView(a.getId(), a.getTitle(), a.getDescription(), a.getCategory(), a.getLocation(),
                 a.getLat(), a.getLng(), a.getScheduledAt().toString(), a.getCapacity(),
-                a.getHost().getDisplayName(), going, "going".equals(status),
+                a.getHost().getId(), a.getHost().getDisplayName(), going, "going".equals(status),
                 a.getMinAge(), a.getMaxAge(), a.getJoinPolicy(), a.getLocationPrecision(), status);
     }
 

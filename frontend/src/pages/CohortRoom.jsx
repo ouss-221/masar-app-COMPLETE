@@ -4,7 +4,7 @@ import { community, activities as activitiesApi, auth } from '../api/client.js';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { FLAG_MAP } from '../components/Flags.jsx';
 import ActivityMap from '../components/ActivityMap.jsx';
-import { IconUser } from '../components/Icons.jsx';
+import Avatar from '../components/Avatar.jsx';
 
 const TEXT = {
   fr: {
@@ -236,10 +236,9 @@ export default function CohortRoom() {
               {members === null && <p style={{ opacity: 0.6, fontSize: 13.5 }}>{t.loading}</p>}
               {members && members.length === 0 && <p style={{ opacity: 0.6, fontSize: 13.5 }}>{t.noVisible}</p>}
               {members && members.filter((m) => !blockedIds.includes(m.userId)).map((m) => {
-                const OFlag = FLAG_MAP[m.originCountry];
                 return (
                   <div key={m.userId} className="m-profile-row" style={{ marginBottom: 8 }}>
-                    <span className="ic">{OFlag ? <OFlag size={17} /> : <IconUser size={17} />}</span>
+                    <Avatar userId={m.userId} name={m.displayName} size={30} />
                     <span className="lbl">
                       {m.displayName || '—'}
                       {(m.university || m.programType) && (
@@ -264,6 +263,7 @@ export default function CohortRoom() {
                 {messagesList.filter((m) => !blockedIds.includes(m.userId)).map((m) => (
                   <div key={m.id} className="m-chat-message">
                     <div className="who">
+                      <Avatar userId={m.userId} name={m.displayName} size={16} />
                       {m.displayName || '—'}
                       <ReportBlock t={t} small onReport={() => setReportTarget({ userId: m.userId, messageId: m.id })} onBlock={() => doBlock(m.userId)} />
                     </div>
@@ -344,7 +344,10 @@ export default function CohortRoom() {
                     {new Date(a.scheduledAt).toLocaleString(lang === 'ar' ? 'ar' : lang)}
                     {a.location && ` · ${a.location}`}
                   </div>
-                  <div className="m-activity-meta">{t.hostedBy} {a.hostName} · {a.goingCount} {t.going}</div>
+                  <div className="m-activity-meta" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Avatar userId={a.hostId} name={a.hostName} size={16} />
+                    {t.hostedBy} {a.hostName} · {a.goingCount} {t.going}
+                  </div>
                   {a.joinStatus === 'pending' ? (
                     <button type="button" className="btn btn-sm mt-2" disabled style={{ opacity: 0.7 }}>{t.requestPending}</button>
                   ) : (

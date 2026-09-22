@@ -4,6 +4,7 @@ import { auth, location as locationApi, students as studentsApi, community } fro
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { COUNTRIES } from '../i18n/DestinationContext.jsx';
 import { FLAG_MAP } from '../components/Flags.jsx';
+import Avatar from '../components/Avatar.jsx';
 
 const TEXT = {
   fr: {
@@ -65,7 +66,7 @@ const TEXT = {
 function StudentRow({ u, t }) {
   return (
     <div className="m-nearby-row">
-      <div className="m-nearby-avatar">{(u.displayName || '?').charAt(0).toUpperCase()}</div>
+      <Avatar userId={u.userId} name={u.displayName} size={38} />
       <div className="m-nearby-info">
         <div className="m-nearby-name">{u.displayName || '—'}</div>
         <div className="m-nearby-meta">

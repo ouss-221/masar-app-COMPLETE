@@ -172,6 +172,14 @@ export const activities = {
   joinRequests: (activityId) => api.get(`/api/activities/${activityId}/join-requests`),
   approveJoinRequest: (requestId) => api.post(`/api/activities/join-requests/${requestId}/approve`),
   declineJoinRequest: (requestId) => api.post(`/api/activities/join-requests/${requestId}/decline`),
+  // Full detail for one activity - powers ActivityChat.jsx, the destination
+  // every "tap this activity" affordance in the app lands on.
+  get: (activityId) => api.get(`/api/activities/${activityId}`),
+  // Poll-based chat, same pattern as community.messages/sendMessage above -
+  // gated server-side to the host and whoever has actually RSVP'd "going"
+  // (see ActivityController.canAccessChat).
+  chatMessages: (activityId, afterId) => api.get(`/api/activities/${activityId}/messages`, { params: afterId ? { afterId } : {} }),
+  sendChatMessage: (activityId, content) => api.post(`/api/activities/${activityId}/messages`, { content }),
 };
 
 export const places = {
@@ -194,6 +202,26 @@ export const location = {
 
 export const students = {
   byUniversity: (university) => api.get('/api/students/university', { params: university ? { university } : {} }),
+};
+
+export const profilePhoto = {
+  // Fetched as an authenticated blob rather than a plain <img src> - same
+  // reasoning as exportApi.downloadChecklistPdf below: a plain <img> tag
+  // can't carry the Authorization header this app's JWT auth needs, and the
+  // photo endpoints require a login (see ProfilePhotoController). `userId`
+  // omitted fetches the logged-in user's own photo; pass another user's id
+  // to fetch theirs (Community/Nearby/Activities/chats - anywhere their name
+  // is already shown). Rejects (never resolves) when there's no photo, so
+  // callers should .catch() and fall back to an initials avatar.
+  fetch: (userId) => api.get(`/api/profile-photo/${userId || 'me'}`, { responseType: 'blob' }),
+  // file: a File/Blob, already cropped+compressed client-side (see
+  // AvatarEditor.jsx) - the backend still re-validates type and size.
+  upload: (file) => {
+    const form = new FormData();
+    form.append('file', file);
+    return api.post('/api/profile-photo/me', form, { headers: { 'Content-Type': 'multipart/form-data' } });
+  },
+  remove: () => api.delete('/api/profile-photo/me'),
 };
 
 export const exportApi = {

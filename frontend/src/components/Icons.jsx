@@ -329,6 +329,35 @@ export function IconPlus({ size = 18, ...rest }) {
   );
 }
 
+// Profile photo: the camera/edit badge on the avatar (Profile.jsx).
+export function IconCamera({ size = 16, ...rest }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} {...rest}>
+      <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1-2h7l1 2h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5Z" />
+      <circle cx="12" cy="12.5" r="3.4" />
+    </svg>
+  );
+}
+
+// Profile photo: "Remove photo" action in the avatar edit sheet.
+export function IconTrash({ size = 16, ...rest }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} {...rest}>
+      <path d="M4.5 7h15M9.5 7V5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2M6.5 7l.7 12a1.5 1.5 0 0 0 1.5 1.4h6.6a1.5 1.5 0 0 0 1.5-1.4L17.5 7" />
+      <path d="M10.3 11v6M13.7 11v6" />
+    </svg>
+  );
+}
+
+// Generic close (X) - the avatar photo modal's dismiss button.
+export function IconX({ size = 18, ...rest }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} {...rest}>
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
 export const NAV_ICON_MAP = {
   home: IconNavHome,
   checklist: IconClipboard,

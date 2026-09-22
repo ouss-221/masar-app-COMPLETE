@@ -71,6 +71,11 @@ public class SecurityConfig {
                 // requires a logged-in user: personal checklist progress, PDF export
                 .requestMatchers("/api/checklist/**").authenticated()
                 .requestMatchers("/api/export/**").authenticated()
+                // Profile photos: viewing one needs the same login the rest of the
+                // app already requires to see that person's name (Community,
+                // Nearby, Activities...); only the /me routes let you change your
+                // own - see ProfilePhotoController.
+                .requestMatchers("/api/profile-photo/**").authenticated()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

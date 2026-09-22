@@ -7,6 +7,9 @@ import { useNationality, NATIONALITIES } from '../i18n/NationalityContext.jsx';
 import { useDestination, COUNTRIES } from '../i18n/DestinationContext.jsx';
 import { getFavorites } from '../utils/favorites.js';
 import { IconGlobe, IconUser, IconClipboard, IconCap, IconInfo, IconChevronRight, IconPin, IconMap } from '../components/Icons.jsx';
+import Avatar from '../components/Avatar.jsx';
+import AvatarEditor from '../components/AvatarEditor.jsx';
+import { loadAvatar, getCachedUrl, subscribe, hasEntry } from '../utils/avatarCache.js';
 
 const TEXT = {
   fr: {
@@ -41,6 +44,8 @@ export default function Profile() {
   const { nationality, setNationality } = useNationality();
   const { country, setCountry } = useDestination();
   const [checklistItems, setChecklistItems] = useState([]);
+  const [myPhotoUrl, setMyPhotoUrl] = useState(() => getCachedUrl(null));
+  const [showPhotoEditor, setShowPhotoEditor] = useState(false);
   const userEmail = localStorage.getItem('masar_user_email');
   const userName = localStorage.getItem('masar_user_name');
   const loggedIn = !!localStorage.getItem('masar_access_token');
@@ -50,6 +55,25 @@ export default function Profile() {
   useEffect(() => {
     if (!loggedIn) return;
     checklistApi.mine().then((res) => setChecklistItems(res.data)).catch(() => setChecklistItems([]));
+  }, [loggedIn]);
+
+  // Drives the "Remove photo" option in the edit sheet (only shown once we
+  // actually know there's a photo to remove) - shares the same cache Avatar
+  // itself reads from, so this doesn't add a second network fetch. Same
+  // refresh-on-notify pattern as Avatar.jsx: after a save/remove clears this
+  // cache entry, re-fetch instead of just reading the now-empty cache, so
+  // "do I have a photo" stays correct for the next time the sheet opens.
+  useEffect(() => {
+    if (!loggedIn) return;
+    const refresh = () => {
+      if (hasEntry(null)) {
+        setMyPhotoUrl(getCachedUrl(null));
+      } else {
+        loadAvatar(null).then(setMyPhotoUrl);
+      }
+    };
+    refresh();
+    return subscribe(null, refresh);
   }, [loggedIn]);
 
   const done = checklistItems.filter((i) => i.done).length;
@@ -76,7 +100,15 @@ export default function Profile() {
     <div className="m-page">
       <div className="m-section-title" style={{ marginTop: 10 }}>{t.title}</div>
 
-      <div className="m-profile-avatar">{initial}</div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Avatar
+          size={88}
+          name={userName || userEmail || initial}
+          className="m-avatar-lg"
+          editable
+          onEditClick={() => setShowPhotoEditor(true)}
+        />
+      </div>
       <div style={{ textAlign: 'center', fontWeight: 600, fontSize: 16 }}>{userName || t.guestUser}</div>
       <div style={{ textAlign: 'center', fontSize: 13, opacity: 0.6 }}>{userEmail}</div>
 
@@ -167,6 +199,16 @@ export default function Profile() {
       </div>
 
       <button className="m-logout-btn" onClick={logout}>{t.logout}</button>
+
+      {showPhotoEditor && (
+        <AvatarEditor
+          lang={lang}
+          hasPhoto={!!myPhotoUrl}
+          onClose={() => setShowPhotoEditor(false)}
+          onSaved={() => setShowPhotoEditor(false)}
+          onRemoved={() => setShowPhotoEditor(false)}
+        />
+      )}
     </div>
   );
 }
